@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZULU Coffee Roastery - Menü</title>
+    <!-- Görseldeki kalın serif fonta en yakın Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-brown: #8B492D;       /* Ana arka plan kiremit/kahve tonu */
+            --header-green: #83977B;   /* Üst bar adaçayı yeşili */
+            --card-beige: #D5BDAC;     /* Kategori kartları bej tonu */
+            --text-dark: #4E2213;      /* Liste içi koyu kahve yazı rengi */
+            --text-black: #140A07;     /* Kategori başlık rengi */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-brown);
+            font-family: 'Fraunces', Georgia, serif;
+            color: var(--text-black);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Sabit Üst Header */
+        header {
+            width: 100%;
+            background-color: var(--header-green);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            user-select: none;
+        }
+
+        /* Menü Konteyneri */
+        .menu-container {
+            width: 100%;
+            max-width: 480px;
+            padding: 20px 18px 50px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .category-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Kategori Kartı (Buton) */
+        .category-card {
+            background-color: var(--card-beige);
+            border-radius: 22px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: transform 0.15s ease, filter 0.15s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+            border: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .category-card:active {
+            transform: scale(0.98);
+        }
+
+        .mask-icon {
+            width: 58px;
+            height: 68px;
+            flex-shrink: 0;
+        }
+
+        .category-title {
+            font-family: 'Fraunces', Georgia, serif;
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: var(--text-black);
+            letter-spacing: -0.3px;
+            line-height: 1.2;
+        }
+
+        /* Açılır Ürün Listesi Kutusu */
+        .items-box {
+            background-color: var(--card-beige);
+            border-radius: 22px;
+            padding: 0 26px;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.35s ease, padding 0.35s ease, opacity 0.25s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+        }
+
+        .category-wrapper.active .items-box {
+            max-height: 800px;
+            padding: 20px 26px;
+            opacity: 1;
+        }
+
+        .items-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .items-list li {
+            font-family: 'Fraunces', Georgia, serif;
+            font-size: 1.22rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .items-list li::before {
+            content: "•";
+            font-size: 1.5rem;
+            line-height: 1;
+            color: var(--text-dark);
+        }
+
+        @media (max-width: 380px) {
+            .category-title {
+                font-size: 1.35rem;
+            }
+            .mask-icon {
+                width: 50px;
+                height: 60px;
+            }
+            .items-list li {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Üst Yeşil Bar ve ZULU Logo -->
+    <header>
+        <div class="logo-container">
+            <svg width="150" height="48" viewBox="0 0 220 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- ZULU Harfleri -->
+                <text x="110" y="38" text-anchor="middle" fill="#181A17" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="36" letter-spacing="4">ZULU</text>
+                <!-- Ortadan Geçen Mızrak Detayı -->
+                <line x1="32" y1="25" x2="182" y2="25" stroke="#83977B" stroke-width="4"/>
+                <line x1="34" y1="25" x2="178" y2="25" stroke="#181A17" stroke-width="2.2"/>
+                <!-- Mızrak Ucu (Sağ) -->
+                <polygon points="175,20 192,25 175,30 179,25" fill="#181A17"/>
+                <!-- Mızrak Tüyü (Sol) -->
+                <polygon points="30,21 44,25 30,29 34,25" fill="#181A17"/>
+                <!-- Alt Yazı -->
+                <text x="110" y="54" text-anchor="middle" fill="#181A17" font-family="Arial, sans-serif" font-weight="800" font-size="8.5" letter-spacing="2.8">COFFEE ROASTERY</text>
+            </svg>
+        </div>
+    </header>
+
+    <!-- Menü Kategorileri -->
+    <main class="menu-container">
+
+        <!-- 1. Dünya Kahveleri -->
+        <div class="category-wrapper">
+            <button class="category-card" onclick="toggleCategory(this)">
+                <svg class="mask-icon" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 25 C22 10, 78 10, 78 25 L74 88 C74 106, 26 106, 26 88 Z" fill="#2A0E08"/>
+                    <path d="M50 14 L38 34 L62 34 Z" fill="#E8D2B5"/>
+                    <path d="M23 48 L43 58 L38 78 L25 72 Z" fill="#28825A"/>
+                    <path d="M77 48 L57 58 L62 78 L75 72 Z" fill="#D9381E"/>
+                    <polygon points="50,42 44,72 56,72" fill="#F28522"/>
+                    <ellipse cx="36" cy="44" rx="7" ry="4" fill="#F28522"/>
+                    <circle cx="36" cy="44" r="2" fill="#1A0804"/>
+                    <ellipse cx="64" cy="44" rx="7" ry="4" fill="#F28522"/>
+                    <circle cx="64" cy="44" r="2" fill="#1A0804"/>
+                    <path d="M38 82 Q50 77 62 82 Q50 86 38 82 Z" fill="#F28522"/>
+                    <path d="M40 88 Q50 93 60 88 Q50 86 40 88 Z" fill="#F28522"/>
+                    <circle cx="32" cy="24" r="1.5" fill="#E8D2B5"/>
+                    <circle cx="68" cy="24" r="1.5" fill="#E8D2B5"/>
+                </svg>
+                <span class="category-title">Dünya Kahveleri</span>
+            </button>
+            <div class="items-box">
+                <ul class="items-list">
+                    <li>Espresso</li>
+                    <li>Double Espresso</li>
+                    <li>Americano</li>
+                    <li>Filtre Kahve</li>
+                    <li>Sütlü Filtre Kahve</li>
+                    <li>Caffe Latte</li>
+                    <li>Cappuccino</li>
+                    <li>Flat White</li>
+                    <li>Cortado</li>
+                    <li>Türk Kahvesi</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 2. Soğuk Kahveler -->
+        <div class="category-wrapper">
+            <button class="category-card" onclick="toggleCategory(this)">
+                <svg class="mask-icon" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Taç / Tüyler -->
+                    <rect x="45" y="6" width="10" height="12" rx="2" fill="#F28522"/>
+                    <rect x="31" y="9" width="10" height="12" rx="2" transform="rotate(-15 36 15)" fill="#D9381E"/>
+                    <rect x="59" y="9" width="10" height="12" rx="2" transform="rotate(15 64 15)" fill="#D9381E"/>
+                    <rect x="19" y="16" width="9" height="11" rx="2" transform="rotate(-30 23 21)" fill="#F28522"/>
+                    <rect x="72" y="16" width="9" height="11" rx="2" transform="rotate(30 76 21)" fill="#F28522"/>
+                    <!-- Yüz -->
+                    <path d="M24 30 C24 18, 76 18, 76 30 L72 90 C72 108, 28 108, 28 90 Z" fill="#2A0E08"/>
+                    <path d="M25 56 L42 64 L40 84 L27 78 Z" fill="#D9381E"/>
+                    <path d="M75 56 L58 64 L60 84 L73 78 Z" fill="#28825A"/>
+                    <path d="M44 38 L56 38 L54 78 L46 78 Z" fill="#28825A"/>
+                    <line x1="42" y1="27" x2="58" y2="27" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+                    <line x1="44" y1="33" x2="56" y2="33" stroke="#E8D2B5" stroke-width="2.5" stroke-linecap="round"/>
+                    <!-- Yuvarlak Gözler -->
+                    <circle cx="35" cy="50" r="7" fill="#E8D2B5"/>
+                    <circle cx="35" cy="50" r="3.5" fill="#1A0804"/>
+                    <circle cx="65" cy="50" r="7" fill="#E8D2B5"/>
+                    <circle cx="65" cy="50" r="3.5" fill="#1A0804"/>
+                    <!-- Ağız -->
+                    <ellipse cx="50" cy="88" rx="10" ry="5" fill="#D9381E"/>
+                    <line x1="42" y1="88" x2="58" y2="88" stroke="#1A0804" stroke-width="2"/>
+                </svg>
+                <span class="category-title">Soğuk Kahveler</span>
+            </button>
+            <div class="items-box">
+                <ul class="items-list">
+                    <li>Ice Americano</li>
+                    <li>Ice Latte</li>
+                    <li>Ice Filtre Kahve</li>
+                    <li>Ice Sütlü Filtre Kahve</li>
+                    <li>Ice Mocha</li>
+                    <li>Ice White Mocha</li>
+                    <li>Ice Flat White</li>
+                    <li>Ice Karamel Latte</li>
+                    <li>Ice Vanilya Latte</li>
+                    <li>Ice Toffe Nut Latte</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 3. Zulu Winter Seri -->
+        <div class="category-wrapper">
+            <button class="category-card" onclick="toggleCategory(this)">
+                <svg class="mask-icon" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="50" cy="14" rx="4" ry="9" fill="#28825A"/>
+                    <ellipse cx="37" cy="17" rx="4" ry="8" transform="rotate(-20 37 17)" fill="#D9381E"/>
+                    <ellipse cx="63" cy="17" rx="4" ry="8" transform="rotate(20 63 17)" fill="#F28522"/>
+                    <ellipse cx="26" cy="24" rx="4" ry="8" transform="rotate(-40 26 24)" fill="#F28522"/>
+                    <ellipse cx="74" cy="24" rx="4" ry="8" transform="rotate(40 74 24)" fill="#D9381E"/>
+                    <rect x="24" y="26" width="52" height="76" rx="24" fill="#2A0E08"/>
+                    <circle cx="19" cy="55" r="6" fill="#F28522"/>
+                    <circle cx="81" cy="55" r="6" fill="#F28522"/>
+                    <circle cx="36" cy="36" r="2" fill="#E8D2B5"/>
+                    <circle cx="50" cy="34" r="2" fill="#E8D2B5"/>
+                    <circle cx="64" cy="36" r="2" fill="#E8D2B5"/>
+                    <circle cx="35" cy="54" r="8" fill="#E8D2B5"/>
+                    <circle cx="35" cy="54" r="4" fill="#1A0804"/>
+                    <circle cx="65" cy="54" r="8" fill="#E8D2B5"/>
+                    <circle cx="65" cy="54" r="4" fill="#1A0804"/>
+                    <path d="M46 58 L46 68 Q50 72 54 68 L54 58" fill="none" stroke="#D9381E" stroke-width="3.5" stroke-linecap="round"/>
+                    <rect x="36" y="78" width="28" height="4" rx="2" fill="#28825A"/>
+                    <rect x="38" y="85" width="24" height="4" rx="2" fill="#F28522"/>
+                </svg>
+                <span class="category-title">Zulu Winter Seri</span>
+            </button>
+            <div class="items-box">
+                <ul class="items-list">
+                    <li>Gingerbread Latte</li>
+                    <li>Pumpkin Spice Latte</li>
+                    <li>Toffee Nut Latte</li>
+                    <li>Salted Caramel Mocha</li>
+                    <li>Kestaneli Latte</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 4. Sıcaklar -->
+        <div class="category-wrapper">
+            <button class="category-card" onclick="toggleCategory(this)">
+                <svg class="mask-icon" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="14" r="5" fill="#D9381E"/>
+                    <circle cx="36" cy="17" r="5" fill="#28825A"/>
+                    <circle cx="64" cy="17" r="5" fill="#F28522"/>
+                    <circle cx="24" cy="25" r="4.5" fill="#F28522"/>
+                    <circle cx="76" cy="25" r="4.5" fill="#28825A"/>
+                    <path d="M24 34 C24 18, 76 18, 76 34 L70 92 C70 108, 30 108, 30 92 Z" fill="#2A0E08"/>
+                    <path d="M26 36 C26 24, 46 24, 46 38 L44 68 L26 62 Z" fill="#28825A"/>
+                    <path d="M74 36 C74 24, 54 24, 54 38 L56 68 L74 62 Z" fill="#D9381E"/>
+                    <polygon points="50,38 41,74 59,74" fill="#F28522"/>
+                    <circle cx="35" cy="48" r="6.5" fill="#E8D2B5"/>
+                    <circle cx="35" cy="48" r="3" fill="#1A0804"/>
+                    <circle cx="65" cy="48" r="6.5" fill="#E8D2B5"/>
+                    <circle cx="65" cy="48" r="3" fill="#1A0804"/>
+                    <ellipse cx="50" cy="86" rx="13" ry="6" fill="#E8D2B5"/>
+                    <line x1="39" y1="86" x2="61" y2="86" stroke="#1A0804" stroke-width="2.5"/>
+                </svg>
+                <span class="category-title">Sıcaklar</span>
+            </button>
+            <div class="items-box">
+                <ul class="items-list">
+                    <li>Çay</li>
+                    <li>Fincan Çay</li>
+                    <li>Sahlep</li>
+                    <li>Sıcak Çikolata</li>
+                    <li>Beyaz Sıcak Çikolata</li>
+                    <li>Chai Tea Latte</li>
+                    <li>Bitki Çayları</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 5. Protein Shake -->
+        <div class="category-wrapper">
+            <button class="category-card" onclick="toggleCategory(this)">
+                <svg class="mask-icon" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 30 C22 10, 78 10, 78 30 L74 88 C74 106, 26 106, 26 88 Z" fill="#2A0E08"/>
+                    <path d="M50 14 C42 22, 42 32, 50 38 C58 32, 58 22, 50 14 Z" fill="#E8D2B5"/>
+                    <circle cx="50" cy="26" r="4" fill="#28825A"/>
+                    <path d="M23 50 L43 60 L38 80 L25 74 Z" fill="#28825A"/>
+                    <path d="M77 50 L57 60 L62 80 L75 74 Z" fill="#D9381E"/>
+                    <polygon points="50,44 44,74 56,74" fill="#F28522"/>
+                    <ellipse cx="36" cy="46" rx="7" ry="4" fill="#F28522"/>
+                    <circle cx="36" cy="46" r="2" fill="#1A0804"/>
+                    <ellipse cx="64" cy="46" rx="7" ry="4" fill="#F28522"/>
+                    <circle cx="64" cy="46" r="2" fill="#1A0804"/>
+                    <path d="M38 84 Q50 79 62 84 Q50 88 38 84 Z" fill="#F28522"/>
+                    <path d="M40 90 Q50 95 60 90 Q50 88 40 90 Z" fill="#F28522"/>
+                </svg>
+                <span class="category-title">Protein Shake</span>
+            </button>
+            <div class="items-box">
+                <ul class="items-list">
+                    <li>Çikolatalı Protein Shake</li>
+                    <li>Çilekli Protein Shake</li>
+                    <li>Muzlu &amp; Fıstık Ezmeli Shake</li>
+                    <li>Espresso Protein Shake</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 6. Soft İçecekler -->
+        <div class="category-wrapper">
+            <button class="category-card" onclick="toggleCategory(this)">
+                <svg class="mask-icon" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="45" y="6" width="10" height="12" rx="2" fill="#F28522"/>
+                    <rect x="31" y="9" width="10" height="12" rx="2" transform="rotate(-15 36 15)" fill="#D9381E"/>
+                    <rect x="59" y="9" width="10" height="12" rx="2" transform="rotate(15 64 15)" fill="#D9381E"/>
+                    <rect x="19" y="16" width="9" height="11" rx="2" transform="rotate(-30 23 21)" fill="#F28522"/>
+                    <rect x="72" y="16" width="9" height="11" rx="2" transform="rotate(30 76 21)" fill="#F28522"/>
+                    <path d="M24 30 C24 18, 76 18, 76 30 L72 90 C72 108, 28 108, 28 90 Z" fill="#2A0E08"/>
+                    <path d="M25 56 L42 64 L40 84 L27 78 Z" fill="#D9381E"/>
+                    <path d="M75 56 L58 64 L60 84 L73 78 Z" fill="#28825A"/>
+                    <path d="M44 38 L56 38 L54 78 L46 78 Z" fill="#28825A"/>
+                    <line x1="42" y1="27" x2="58" y2="27" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+                    <line x1="44" y1="33" x2="56" y2="33" stroke="#E8D2B5" stroke-width="2.5" stroke-linecap="round"/>
+                    <circle cx="35" cy="50" r="7" fill="#E8D2B5"/>
+                    <circle cx="35" cy="50" r="3.5" fill="#1A0804"/>
+                    <circle cx="65" cy="50" r="7" fill="#E8D2B5"/>
+                    <circle cx="65" cy="50" r="3.5" fill="#1A0804"/>
+                    <ellipse cx="50" cy="88" rx="10" ry="5" fill="#D9381E"/>
+                    <line x1="42" y1="88" x2="58" y2="88" stroke="#1A0804" stroke-width="2"/>
+                </svg>
+                <span class="category-title">Soft İçecekler</span>
+            </button>
+            <div class="items-box">
+                <ul class="items-list">
+                    <li>Ev Yapımı Limonata</li>
+                    <li>Çilekli Limonata</li>
+                    <li>Cool Lime</li>
+                    <li>Hibiscus</li>
+                    <li>Churchill</li>
+                    <li>Soda / Meyveli Soda</li>
+                    <li>Su</li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function toggleCategory(button) {
+            const currentWrapper = button.parentElement;
+            const isAlreadyOpen = currentWrapper.classList.contains('active');
+
+            // Açık olan diğer tüm kategorileri kapat (görseldeki gibi tek sekme açık kalır)
+            document.querySelectorAll('.category-wrapper').forEach(wrapper => {
+                wrapper.classList.remove('active');
+            });
+
+            // Tıklanan kategori kapalıysa aç
+            if (!isAlreadyOpen) {
+                currentWrapper.classList.add('active');
+            }
+        }
+    </script>
+
+</body>
+</html>
