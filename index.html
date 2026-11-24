@@ -1,0 +1,1715 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZULU Coffee Roastery - Menü</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg-brown: #8B492D;
+    --header-green: #83977B;
+    --card-beige: #D5BDAC;
+    --text-dark: #4E2213;
+    --text-black: #140A07;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: var(--bg-brown);
+    font-family: 'Fraunces', Georgia, serif;
+    color: var(--text-black);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 100px;
+}
+
+button, input, select, textarea {
+    font-family: inherit;
+}
+
+header {
+    width: 100%;
+    background: var(--header-green);
+    padding: 16px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,.15);
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menu-container {
+    width: 100%;
+    max-width: 480px;
+    padding: 20px 18px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.category-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.category-card {
+    background: var(--card-beige);
+    border-radius: 22px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    transition: transform .15s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,.12);
+    border: none;
+    width: 100%;
+    text-align: left;
+}
+
+.category-card:active {
+    transform: scale(.98);
+}
+
+.mask-icon {
+    width: 58px;
+    height: 68px;
+    flex-shrink: 0;
+}
+
+.category-title {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: var(--text-black);
+    letter-spacing: -.3px;
+    line-height: 1.2;
+}
+
+.items-box {
+    background: var(--card-beige);
+    border-radius: 22px;
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height .35s ease, padding .35s ease, opacity .25s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,.12);
+}
+
+.category-wrapper.active .items-box {
+    max-height: 1600px;
+    padding: 20px;
+    opacity: 1;
+}
+
+.items-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.product-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    color: var(--text-dark);
+    border-bottom: 1px solid rgba(78,34,19,.16);
+    padding-bottom: 10px;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.product-name {
+    position: relative;
+    padding-left: 20px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.product-name::before {
+    content: "◆";
+    position: absolute;
+    left: 0;
+    top: .05em;
+    color: #C46A3C;
+    font-size: .78em;
+    text-shadow: 0 0 0 #2A0E08;
+}
+.product-name::after {
+    content: "·";
+    position: absolute;
+    left: 5px;
+    top: .62em;
+    color: #83977B;
+    font-size: .85em;
+}
+.product-price {
+    font-size: .9rem;
+    opacity: .85;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex-shrink: 0;
+}
+
+.quantity-controls button,
+.cart-item-right button {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    background: var(--header-green);
+    color: #181A17;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity {
+    min-width: 15px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+/* SABİT SEPET */
+
+.cart-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 200;
+    padding: 12px 18px;
+    background: var(--header-green);
+    box-shadow: 0 -3px 15px rgba(0,0,0,.2);
+}
+
+.cart-button {
+    max-width: 444px;
+    margin: auto;
+    width: 100%;
+    background: var(--text-dark);
+    color: var(--card-beige);
+    border: none;
+    border-radius: 16px;
+    min-height: 56px;
+    padding: 12px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.05rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.cart-count {
+    background: var(--header-green);
+    color: var(--text-black);
+    border-radius: 50px;
+    padding: 4px 10px;
+    margin-right: 5px;
+}
+
+/* SEPET PENCERESİ */
+
+.cart-overlay,
+.checkout-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background: rgba(0,0,0,.65);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.cart-overlay.show,
+.checkout-overlay.show {
+    display: flex;
+}
+
+.cart-panel,
+.checkout-panel {
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: var(--card-beige);
+    border-radius: 24px 24px 0 0;
+    padding: 22px 20px 30px;
+    animation: slideUp .25s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.cart-header,
+.checkout-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.cart-header h2,
+.checkout-header h2 {
+    font-size: 1.6rem;
+    color: var(--text-black);
+}
+
+.close-cart,
+.checkout-header button {
+    border: none;
+    background: var(--header-green);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 23px;
+    cursor: pointer;
+}
+
+.cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(78,34,19,.2);
+    color: var(--text-dark);
+}
+
+.cart-item-name {
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+.cart-item-price {
+    font-size: .85rem;
+    margin-top: 4px;
+}
+
+.cart-item-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 800;
+    flex-wrap: wrap;
+}
+
+.cart-item-right button {
+    width: 29px;
+    height: 29px;
+    font-size: 18px;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 30px 10px;
+    color: var(--text-dark);
+    font-size: 1.1rem;
+}
+
+.price-breakdown {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(78,34,19,.25);
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    color: var(--text-dark);
+}
+
+.price-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: .98rem;
+}
+
+.price-line.total {
+    border-top: 2px solid rgba(78,34,19,.3);
+    padding-top: 14px;
+    margin-top: 5px;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-black);
+}
+
+.service-info {
+    font-size: .8rem;
+    color: var(--text-dark);
+    opacity: .8;
+    line-height: 1.5;
+}
+
+.clear-cart,
+.checkout-button {
+    width: 100%;
+    margin-top: 14px;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.clear-cart {
+    background: var(--text-dark);
+    color: var(--card-beige);
+}
+
+.checkout-button {
+    background: var(--header-green);
+    color: var(--text-black);
+    font-size: 1.1rem;
+}
+
+/* ÖDEME EKRANI */
+
+.checkout-panel h3 {
+    margin: 20px 0 12px;
+    color: var(--text-dark);
+}
+
+.checkout-panel input:not([type="radio"]),
+.checkout-panel select,
+.checkout-panel textarea {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(78,34,19,.2);
+    border-radius: 12px;
+    background: #E8D2B5;
+    color: var(--text-black);
+    font-size: 1rem;
+    outline-color: var(--header-green);
+}
+
+.checkout-panel textarea {
+    min-height: 85px;
+    resize: vertical;
+}
+
+.payment-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+    background: rgba(131,151,123,.35);
+    border-radius: 12px;
+    font-weight: 700;
+}
+
+.checkout-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: var(--text-dark);
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: .95rem;
+}
+
+.checkout-total {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid rgba(78,34,19,.3);
+}
+
+.checkout-total .price-line.total {
+    font-size: 1.25rem;
+}
+
+.delivery-notice {
+    background: rgba(131,151,123,.35);
+    padding: 12px;
+    border-radius: 12px;
+    font-size: .85rem;
+    line-height: 1.5;
+    margin-top: 12px;
+    color: var(--text-dark);
+}
+
+.confirm-order,
+.back-to-cart {
+    width: 100%;
+    padding: 16px;
+    margin-top: 12px;
+    border: none;
+    border-radius: 13px;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.confirm-order {
+    background: var(--text-dark);
+    color: var(--card-beige);
+}
+
+.back-to-cart {
+    background: var(--header-green);
+    color: var(--text-black);
+}
+
+/* SİPARİŞ ONAY EKRANI */
+
+.success-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(20,10,7,.92);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.success-overlay.show {
+    display: flex;
+}
+
+.success-panel {
+    width: 100%;
+    max-width: 430px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: var(--card-beige);
+    border-radius: 26px;
+    padding: 30px 24px;
+    text-align: center;
+    animation: successAppear .4s ease;
+    box-shadow: 0 15px 50px rgba(0,0,0,.35);
+}
+
+@keyframes successAppear {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.success-icon {
+    width: 85px;
+    height: 85px;
+    margin: 0 auto 22px;
+    border-radius: 50%;
+    background: var(--header-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dark);
+    font-size: 52px;
+    font-weight: bold;
+    animation: checkPop .5s ease .2s both;
+}
+
+@keyframes checkPop {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+}
+
+.success-panel h2 {
+    font-size: 1.7rem;
+    color: var(--text-black);
+    margin-bottom: 12px;
+}
+
+.success-message {
+    color: var(--text-dark);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 22px;
+}
+
+.success-order-info {
+    background: rgba(131,151,123,.35);
+    border-radius: 16px;
+    padding: 18px;
+    text-align: left;
+    margin-bottom: 22px;
+}
+
+.success-order-number {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(78,34,19,.2);
+    margin-bottom: 14px;
+}
+
+.success-detail {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 10px 0;
+    font-size: .95rem;
+    color: var(--text-dark);
+}
+
+.success-detail strong {
+    text-align: right;
+    color: var(--text-black);
+}
+
+.success-items {
+    background: rgba(131,151,123,.22);
+    border-radius: 14px;
+    padding: 15px;
+    margin: -6px 0 20px;
+    text-align: left;
+    color: var(--text-dark);
+    font-size: .92rem;
+}
+
+.success-items > strong {
+    display: block;
+    margin-bottom: 9px;
+    color: var(--text-black);
+}
+
+.success-item-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(78,34,19,.12);
+}
+
+.success-item-row:last-child {
+    border-bottom: 0;
+}
+
+.success-item-row span:last-child {
+    white-space: nowrap;
+    font-weight: 800;
+}
+
+.success-home-button {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    background: var(--text-dark);
+    color: var(--card-beige);
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+@media (max-width: 380px) {
+    .category-title { font-size: 1.35rem; }
+    .mask-icon { width: 50px; height: 60px; }
+    .product-name { font-size: .95rem; }
+    .quantity-controls { gap: 6px; }
+    .cart-item-right { gap: 5px; }
+}
+/* Uzun ürün isimleri için taşma kontrolü */
+.product-info{min-width:0}.product-name{overflow-wrap:anywhere}
+
+.brand-logo{display:block;width:124px;height:124px;object-fit:contain;border-radius:2px}
+.logo-container{display:flex;align-items:center;justify-content:center}
+header{background:#83977B;padding:8px 16px}
+.mask-icon{width:64px;height:76px;flex-shrink:0}
+.product-name{padding-left:29px}
+.product-name::before,.product-name::after{display:none}
+.product-mark{position:absolute;left:0;top:1px;width:22px;height:25px;overflow:visible}
+@media(max-width:380px){.brand-logo{width:108px;height:108px}.mask-icon{width:54px;height:66px}.product-mark{width:20px;height:23px}}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo-container">
+        <img class="brand-logo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQECAgMCAgICAgQDAwIDBQQFBQUEBAQFBgcGBQUHBgQEBgkGBwgICAgIBQYJCgkICgcICAj/2wBDAQEBAQICAgQCAgQIBQQFCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAj/wAARCAG/Ab8DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD3Ciiivyc/PwooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiigkAEsyovcsQAPqT0oAKK/NPxf/wAFcv2GvB3iPVfDM3xD8UeJbizlaGa70bQ5bmzdlbafLmJXzFz0ZQVPYmuV/wCHzn7DP/QwfFI/9yy3/wAcr0FlOJevIzsWX1n9k/Vaivyn/wCHz37DH/QwfFT/AMJh/wD45Sf8Pnv2Gd23+3vip/4TLf8Ax2n/AGRif5GP+zq/8p+rNFflR/w+c/YZ/wCg/wDFP/wmW/8AjlA/4LO/sME4PiD4pqffww//AMco/sjE/wAjD+zq/wDKfqvRXz98Av2pvgL+09peq6p8E/iFp3i9tP8ALOoWRikt7ywD52NLBKqsFbDAOuUJBG7NfQNcVWlKEuWaszlnTlF8slZhRRXwV8ff+ClX7Kf7NvxF1T4U/EfxD4zl8bWMEM95b6XorXMduJYllRTIzopYo6sQMgZ65q6GGqVXy01dlUqM6jtBXPvWivyfP/BaT9h7BxqfxcJ/7Fof/Hq+8/2f/wBoj4UftPfD5fib8Hdeutd8Li9l02f7Tatbz2l1GiO0MsTdG2TROCCQVdSD1xrXy+tTjzTjZGlXB1YLmkrI9tooorjOYKK+Zv2l/wBrr4IfslaL4Y1r4za3rNgus3Mttpttp1g11POYwpkcjKqiL5kYLMw5YYzzj42X/gtL+w+TzqPxdX/uWh/8erto5dXqR54Rujqp4KrNc0Y6H6xUV8L/ALO//BRf9mP9qD4gxfC/4Xav41PjOSwn1GKDU9H+zI8USqzjzA7AOFYtg9Qjc9M/dFYV8NOlLlqKzMqtGUHaaswoor5h/aN/bG/Z8/ZSj8N/8Lr8ZXehXurea1hZ2enzXlxMke0NIVjGEQFgNzEZPAzg4mlRlUlywV2TTpym+WKuz6eor8sz/wAFlP2Eh08XfEl/p4Yl/wDi6+nv2av21v2ff2tbvxZp/wAFvEOv6lqWiQw3N/bajpclm6wyMyrIm4kMNylTzkEjjmumrlteEXKUWkjeeCqxXNKOh9XUUUVxHKFFFFABRRXMeNfGfhj4deEfEvjzxrq8Og+EtHsZtR1G8kVmEEEaFmO1QSxwMBQCSSAOtOMW3ZbjjFt2R09Fflj/AMPlv2Ey20eLPiX7H/hF5ef/AB+up8Gf8FaP2IvHXirw/wCD9L8eeLtM1PU7uCxtZtR0CaG2EsrBU8yUFgi7mALEYHcgc13vKcSvsM63l9b+Vn6S0U51ZGZHBVgcEehpteecYUUV+ePxN/4Km/sZfCbx54p+G/irxx4tuPE+jXkun6gNO0Ce4gjuIyRIizfKr7SCpIyMg8mt6GFqVXamrmtKhOppBXP0Oor8sv8Ah8r+wofu+K/iYw9R4Xl/+Lr77+C/xn+Hn7QXw30D4s/CzVrvWvBOpNcR201xavbSh4ZnhkV4n+ZSHjb6gg960r4CtTXNONkXVwlSC5pKyPUqKKK5DnCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK+JP+CiXxyi+AP7I3xZ8VQzJH4h1Szbwzo4P8V3eI8ZI90iE8g90HrX23Xyj+1v+x98NP2yfBXh3wV8SdZ8a6Ba6XqP9pWlzol1FFIHKFGV1ljkRlIPHGQRweTnrwMoRrRlU+FG+FlFVE57H8KtFf1Q/wDDiT9mLOf+Fs/Hv/wI07/5FpP+HEP7MJP/ACVr48gf9d9P/wDkavuP9YcN/N+DPqP7Vodz+V+iv6oD/wAEIv2Yj0+Lvx7H/bfT/wD5Gpf+HEX7MOMf8Lc+PeP+u+n/APyNV/2/g/5vwf8AkH9q0O5/K9RX31/wUN/Zb+Fv7JHxr0r4VfDDxt4p8YxnQoNR1JNWSET2FxI7lIy8SIrho0jcDb/EB3r4Fr1qVVTipx2Z3U5qUVJbM/Yb/giDfX9r+2Xq1lbPLHa3PgfVYbpcZWSMS20g+g8yJGFf1pV/Nv8A8EIPgzqMvib40ftCX6GHSbfTk8H6cNuFmmmkhurhl/3Ft7cf9tjX9JFfBcSTTxNl0SPl84mnWsuiCv4w/wDgrP8A8n6fGn/rjpP/AKb7av7PK/jH/wCCs/8Ayfp8Zf8ArjpP/pvta6OFv40vT9TXJP4j9D836/qE/wCCDV3eSfAv492ElwDYxeLbOWKEdEd7EBn/AOBCKMf8Br+Xuv6ef+CC/wDyRv8AaG/7GfTP/SJ697P1/s0vl+Z62aL9xL+up+79FFFfnR8efzwf8F8f+QZ+zN/1213/ANBsq/nGr+jn/gvj/wAgz9mb/rtrv/oNlX841fpGR/7tD0/U+yy3+BE/Vf8A4IyEj9uvwkP+pd1sf+SVf2A1/H9/wRl/5Pr8H/8AYua3/wCkVf2A185xR/Hj6fqzxc6/ir0Cv5iP+C8sjn41/AaL+AeELhh9TfS//ECv6d6/mI/4Lzf8ls+An/YnXP8A6Xy1jw3/ALz8mZ5P/G+R+D1fvt/wQS/5Kh+0d7eGdPX/AMnK/Amv3r/4IJ3BX4t/tD2x/j8K2Mn/AHzeKP8A2avrM5/3efofQZh/Bl6H9NtFFFfmh8WFFFFABXxf/wAFEyR+xD+0sR1/4Rmb/wBDSvtCvi3/AIKK/wDJkH7Sn/Yty/8AoxK6sAv38PVfmdGE/ix9V+Z/Dun3RSlzGDKhMZX7mz+CkT7opJf9TJ9K/Vj7g/0XGcykysclvmJ9c80lRW//AB72x7+Wn/oIqWvyKp8TPgZ7sK/gy/a7/wCTpv2iP+x21n/0sev7za/gx/a//wCTrf2iv+x21n/0revquFPin8v1PcyLeXyPnWv7G/8Agjx/yYZ8Of8AsNa1/wClbV/HJX9jX/BHf/kwv4df9hrW/wD0ravS4k/3f5o7s4/g/M/T6iiivgD5MKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACobi5tbK3uL2+uI7SxhjaaeZ/uxRqCWY+wAJ/Cpq/On/gqd8c5Pgf+x38QJNMuxaeJ/E5Twpp5WTa6C4VjO6+oECTLnsZFNdGEoOrUjTXVm2HpOc1BdT+Tb9pv4t3Px2/aA+LHxcncxDWtbuZ7eNjlbe2BKQRqf7oiSJK8EZgg5p1fbP8AwTw+BcX7QP7XXwl8FapYNqHhSzuzrmuLkbTY2Y80q/8Asu4ih/4GK/U5SjRhd7I+3k1GN+iP6uf2AfgjP+z7+yN8G/AGpW8tr4lm0/8At3WUkQLJFe3h89onA/iiRooD/wBca+xqc7tI7yMcsxJP1ptflWIrOpNzfU+GrVHOTk+oV/GL/wAFaf8Ak/P4x/8AXHSf/TdBX9nVfxj/APBWf/k/T4y/9cdJ/wDTfa19Dwt/Gl6fqetkn8R+h+b9f06/8EFuPhD+0T/2Mul/+kclfzFV/Td/wQS/5JL+0X/2MWlf+ks1e/n3+7S+X5o9fM/4Ev66n71UUUV+cnxx/PB/wXx/5Bn7M3/XbXf/AEGyr+cav6Of+C+P/IM/Zm/67a7/AOg2VfzjV+kZH/u0PT9T7LLf4ET9V/8AgjL/AMn1+D/+xc1v/wBIq/sBr+P7/gjL/wAn1+D/APsXNb/9Iq/sBr5zij+PH0/Vni51/FXoFfzD/wDBeT/kuHwG/wCxOn/9L5q/p4r+Yj/gvN/yWz4Cf9idc/8ApfLWPDf+8/JmeTv998j8Hq/eT/ggl/yWL9oP/sU7T/0tSvwbr95P+CCX/JYv2g/+xTtP/S1K+szn/d5+h9Dj/wCDL0P6dKKKK/ND4oKKKKACvi3/AIKK/wDJkH7Sn/Yty/8AoxK+0q+Lf+Civ/JkH7Sn/Yty/wDoxK68B/Hh6r8zown8WPqvzP4d0+6KSX/UyfSlT7opJf8AUyfSv1U+4P8ARUtP+POy7/uY/wD0EVPVaz/48rLHTyI//QRVmvyKp8TPgqnxMK/gx/a//wCTrf2iv+x21n/0rev7zq/gy/a7/wCTpv2iP+x21n/0sevquFPin8v1PbyLeXyPnSv7Gv8Agjv/AMmF/Dr/ALDWt/8ApW1fxy1/Y1/wR3/5ML+HX/Ya1v8A9K2r0uJP93+aO7OP4PzP0+ooor4A+TCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAr+Wr/guF8dLfxj8a/A3wN0m7WfT/AAhprXuoBJAQNQvArY47pFHbZHYuwr+n/X9d0rwtoOueKNduVs9D0yyn1G9mJAEVvFG0kjZPoqMa/gN+NXxL1b4x/Fr4i/FbXmMuqa/rFzqUgAwqJJIzAAeiqwA9hX1HC+GvUlVfT9T28ko3m5voeX1/Tx/wQ1+AEPhz4Z/EX9o7WLVTrfiG6PhvRmZAGh022dXnZT/dln8pf+3UV/M7oukanr+saX4f0WxuNS1u+uI7K1tY48m5nkfbHEif32b5a/vj/Z/+Edl8BPgf8KfgzYtayr4c0O2024mhTal1dhd1zOB/00maaT/gderxJieSjyLeR35xX5aXKup6/RRRXwR8qFfxj/8ABWf/AJP0+Mv/AFx0n/032tf2cV/GT/wVm/5Px+M//XDSf/TfBX0/C38aXp+p7WSfxH6H5u1/Tf8A8EFP+SUftH/9jJpX/pLNX8yFf03/APBBL/kkn7Rn/YyaV/6SS17+ff7tL5fmj18z/gS/rqfvTRRRX5yfHH88P/BfL/kFfsy/9dte/wDQLOv5xa/o8/4L4f8AIK/Zk/6769/6BZ1/OHX6Rkf+7Q9P1Psst/gRP1X/AOCMv/J9fg//ALFzW/8A0ir+wGv4/v8AgjL/AMn1+D/+xc1v/wBIq/sBr5zij+PH0/Vni51/FXoFfzC/8F5f+S3/AAI/7Eyf/wBOEtf09V/MP/wXm/5Lb8Bv+xNuP/ThJWHDb/2n5Mzyf+N8j8H6/eL/AIILD/i9P7QHqPCNqP8Ayejr8Ha/dr/ggqxb43/HsH/oToP/AEvir63Of93n6H0GYfwZeh/T9RRRX5ofFhRRRQAV8Z/8FDl3/sS/tKJ6+GZ//Qlr7Mr42/4KFKW/Yo/aSUdT4ZuP/QlrqwP8eHqvzN8L/Fj6o/huT7opJf8AUyfSlT7opJf9TJ9K/Vj7k/0UbAg6fpxHANvEf/HBVqsvQnMug6BKer2Fs/5xKf61qV+R1fiZ8FU+JhX8GP7X/wDydb+0V/2O2s/+lb1/edX8GP7X/wDydb+0V/2O2s/+lb19Twp8U/l+p7eRby+R861/Y/8A8Ee/+TC/hr/2Gdb/APS16/jgr+x7/gj1/wAmE/DT/sMa3/6WPXpcSf7v80d2cfwfmfp1RRRXwB8mFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUV82ftN/tYfBz9knwhpXi/wCL+qaxbQajPLaaXZ6fZNc3GoTogZlUZVEADLlpGVRuHJrC/Zd/as8N/tk/B/xb8TfhDo2q+EHs9VvPDtsPEkCyp9tjtLedZnjt5QWhzeRgqHDfK2D0rqjg6jh7W3u9zdYabjz293ufWFFfzHftJft/f8FRP2WfijJ4f+LNn8PNEtZS7aaIfDkEmkatCCMPbXJ/eOACMjzA6nqAa/XD4WftefE74lfsD237WuifCHSfEfxCTTtQvJfDNpeSxwXYtL2WCWSBiGcjy4Wm8vOThlDdM9tfJqkIxldNPTfudVXLJxSd00zo/wDgol4X+N3jv9lD4g+AvgF4Pv8Axp421uS1064t7a4iili08yeZO6+Y6liREse1ecSGvwX8Mf8ABDz9rfWNKiv9e8UfBzwXeyIM6fe6rPPLGD1Ba3gkRT7BjX3h+xx/wV3+IX7Rvx88HfBLxV8B/D9oNeunghvdEvpg+lKiPJJLMk28SRoiFjgqflNcr+3/AP8ABTL9rD9mD9onXfhX4S8EfDXw/wCEIbK3u9Ku9RspL+bV7eRT/pBYSqq/OHQxquVKHJPWvYwVPFUf9ngop73PRw0K9L9zFK+5zn7Ff/BJL42fBH9qjwF8TvjJc/DnV/h94b83VLWXTNR+0NdX6Li2XyZEV1Cuyy7iOPJHqK/ojr86Phv+2rr8f7MH7H3x2+MGk+D9LXx74hi8P+IbyF5LW30tZpL2O3uolZmCr/osLOHJAVmwRXun7Qnxt+NHwYtJPEvgn9mXXPj54IEYmafw3r6fb4I8cs1k0BaReCQ8TOCMZx0rzswp4ivNc9uqXbR+ZxYuFarNc9r7H1HRX4TH/gux8M9N1O70vxP+zX8UtCu4JDHPE2rW4mgK/eV43iQq4/uk12Vl/wAF0P2WbhVN78OfjdpxPpaWcw/Pz1rmeSYlfZ/FGLyuv/KftPX8Yv8AwVp/5Pz+Mf8A1x0n/wBN0Ff02/sk/t0/Bn9syXx1a/CvTvHel3vh6O1mvo9asYoAyTmRUMbRyyBiDEQQcdRX8yn/AAVo/wCT9PjQe/k6R/6bbavY4doTp4iUJqzt+p35TSlCrKMlZ2Pzfr+nX/ggp/yRz9oj/sZ9M/8ASOSv5iq/p2/4IKf8kc/aI/7GjTv/AEkkr2M/X+zS+X5np5n/AAJf11P3ior5Y/aU/bK+Bf7Jcvg+L406j4t0tddWZtPl0/R5LuJjEyh1dwQFcb0O3k4IOK4XVP8Agot+yhpXwZ0D4+nxt4i1L4Zajq02hR3dnoF3LJb38ah2gnj2Dyn2EON5G5eRmvhoZfWklKMXZny0cJVaTUdGfmF/wXyKjSf2Ztzbf9J1vn/gNnX84fy5/wCWMlf3V638WP2PPjH8C/Cnx2+It78KfEXwRvXePTdW8X6PGYYJXnMDRlbqItC5kg2nIA+QHOMGvANP8E/8EjviZLJLpei/sXaxcL98W11ZWZ/74R4x+Qr6rLM1dCkqcoS002PcweNdOmoOD08j8LP+CMv/ACfX4P8A+xc1v/0ir+wGviz4V/Cf/gn/APCfxfB4/wDhBY/s6eDPGMVtNax3+m+I4BJHDIm2RdpuCvKgjJHTNfTUXxR+Fs8qww/FH4ZyzHoi+IbMk/h5leLnFV16ilCL0XVHn5jUdWalGL27Hc1/OV/wW0+D/wAV/iN8Xvgnq3w8+GPxA8e2Nv4VmtribRdGuL1IHF7K5R2iVgjFXUjPOK/efxf8bfgx8P8ATJdZ8b/Fz4ZeFdLQZaa9121jH4Lv3N9ADXyl+1B/wUl+AX7JHj/T/hp8Q7D4l6r4luNPi1MnRtOilt44ZGdU/eSTR7mPltwoPUc1nlUa1Orzxg3o/IjAKpCopRjc/kr0P9kb9qjxOJm0D9m7436gI/vFPC16iIfbMYr9ev8Agid4I8dfDX9pL47+EPiJ4P8AEvgTxD/wg8Vx/Z+r6fLZ3Aj/ALQt8OI5VVtnz9a/Vb9qP/gpJ8Df2Xj8L5fFWk/EPxxD4t0SPxDpFxo1tC0T2D4MbM80qfMwYHaAcAg5r2DR/wBsL9nTV/2ftM/aqufHWm6J8KZbdoDqF/ARdWkvmYewaJA8gn8yMZhTduIVhlcNXtYvM69Si4ypaS0XqeliMZVnTs4aS0Pp+lAJDEAkKCxPoB1J9q/Ab46/8F0fBGlDUdF/Z1+FuqeL79S8cWteJJBa2nTh0tYmMrc9nZPcV+L3x1/bu/aq/aEa6h+I3xb1+PQZjk6LpZ/s+wUMMeX9nh27x/tOWPvXn4XhqtPWo+VficdDJ6ktZ6I/qw/aD/4KO/smfs5m903xN8R7Xxl4yhVv+JF4Z2ahdKw/hkdWEMR9nkDe1bVv+2t4OT9jWf8AbP8AEHgfxJ4V8ItYz39jol3dxG9vk+1tbWwDquxTM4VgPm2o2cmv4cpGO3apr+mz/gr2NR+C37En7NH7P+li0i0gXFhpF5sTIkGmacF2r6KZGV/cgV6FbI6NOVOmtXJ/gtWddTLaUHCC1bf5HqHwy/4Lhfsx+LLyKw+Ingn4k/CZnUlbp449UtSfRjDtlX/v2a/QPw98f/2R/wBpzwxq/g7Rfit8JPif4e1WxaDUNGm1JI5bi3kXDRyW0pSZTg9NoIPuK/hEoXCtuHWuyrw5Rb5oNxfkdNTKKTd43TP7GvF//BHb9hnxVYTSaT4A8Z+ApZm8yK70XxDclUz/AHEujPHj2xXyj4x/4IL/AAqvdjeAP2g/iB4cX+KPWNFttRz9Hie2x/3zX88fhX43fGfwIkUfgr4t/EvwfDH9yLTtcubaOP8A7ZxtX0z4e/4KZ/t1eGoo7ax/aN8ZajbwrhV1KC2v8r6lriNyT+NUsvxsfgq39UP6riI/DUv6o/tptraCytrWxtQwtYIkhiyOdiqFH6AVNX8lvhb/AILa/ti6Strb63pnwg8bhBgyXOhTQSye7fZ5kXP/AAGvTLT/AILpftHRSpLefBH4PXVsPvoseopz/dD+cRn8K8KfDWJve6fz/wCAeVLJ6176H9Q1fxb/ALZv7JX7TmnftH/HbxM/wD+LN54a1DxPqWo2mqWOiXF1Z3FtJO8kciTwI6bdhHG7Nfo14d/4L16ihA8cfsw2yL/e0rxE8Z/75mhb+dfRng3/AILofst6tLZr4p8C/GPwJM7YklS3tr6KAd2LJKjkewTNdWX4XF4Nt8nNfzOjCYevQbaje/mfyp6hYXum3Js9Qsp9NukPlmOeJ0eL+9vRq/sU/wCCPQYfsFfDUt1Osa2f/J166bTf+Cin/BO341W1xo3iP4r/AA5v7WWMh7TxfokkcUinqD9qhMf1Ga+p/gz4x/ZyvPDGneHfgB4o+CzeFY3lktdM8K3tisUbyOZHK21uRhmZmY/LnJyaeb5hUq0fZum4sMfip1KfI4NM9top7xvGxSRHjf0YYNMr5E8AKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD+eD/gvd4ljOnfs2eDkmTz1m1nVHQffVdtrGrfThz/AMBrmP2Ez4/i/wCCRH7Xlx8LfEOpeFfHNp4t1PUbW9sLh7aaGOGw0aacRyJ8ysYop1BHPbvX6Sf8FF/2Co/2z/BXh2/8IazpHhn4xaA7LpV3qUkwsry0kIMttN5YcodypIsioTlSp4bK1/8Agnt+xR47/Ze+AnxV+D3xm8T+DvFdp4p1GW4e00JpmhtYJbMWs6mWaKMs0iKnRcDb3zX1VHHUo4SKvrFrT5nv08XTWHir6prT5n5r/wDBMz9pif8Aay1HxX+xr+2M0Px38NahYPrHhmXxIPtFzbXUAZ5oUuDiUEwsXVg25PKcA4fFdx+1p+3Rpv7HP7TX7PHwF/Z/aTw38DPhosMHizQ9Md3i1BZ2Jns5C5PmyRwvvBdiRO7knIr6G/Zc/wCCRGnfsy/tE+Dfjtpnx9vvElvoc9y9rpcnhpYjNFLazW5SWYXJzhZgchf4enNfn38Rv+CMX7Y3jH4o+LvEUvjH4MazZ6vq9zqEusSazcxnbLMzkyQtAZd/zBtqhhnvXdGvhZ1XLnXLbbpfv9x1Rq0JVHLm0tt5n3P+1HpH7Pf/AASrHxI+P3wU8HzT/Hj4iT3Gi+H7S8nR9O8Nx4Et1LbQhQVi3+R+7YsCWjQYRWB+Jf24NU8R/tdfsQ/sNftDLp934i+KcupXPgjV3gtVSXUdRZzEihYwApkltZJAowuZmwB0r7F/4Kxfsa/tT/tQeNPgzqXwf0DSvHXhfSdDmtL6L+1LSwMGpPOWkm2XEiEo6iHBUnATB6V9+fsIfs5eKP2Z/wBmLwL8G/iVeeEvEfibT9RutVY2cJuLaylkm82MI0gUvJG2T5iheT8pGM1zxxlOnShWlLmn6622MViIQpxqN3kfnD+0x+zh8WfjR8NP2fv+CcXwOPhi/wBZ+HXhzTNY+IGtXly8WnWGoNAUgg3IjuXkdr2ZY1Q/I0ZOApx6p+zP+zV4t/YTXSL742/8FGdK8O+GoFVp/Bz3FsNNY/NlFOoOZFGXzvihjbgc16ZrH/BPD4salpXxM0Wy/bk+KHh2x8Ya7N4i8QnTfDlvbS6jdyAL88yz+YI1VUURhguFAxXyRf8A/BBvwxqN095d/tReLbu5fl5J/DEUjt/wI3NNYyg48jqK3pv33/yGsTSceVz09P8AM+x/jn+1N/wSo+LG/TvjN44+BnxMMQkEUsulz309uGIBEN5DCZFP3f8AVuOlfF0X7N3/AARC+Il1LeeH/jXpfheSd/ltf+ExmsUhY9kW+jyM+jE1Vf8A4IGeHMOI/wBp7Wk/u58IxfL/AOTVU3/4IF6aRhP2ptR2+h8Hpj/0sopVsLBWhWa/r0FCpQirRqNf16H6l/sd/stfsq/s7W3jbVv2Z9bHiZdbitIdUux4li1YLHE0jRKPK+WPJeTkjLbfav5nf+CtIH/DenxlAzkw6R/6bbav6If2Cf8Agn3pn7Ds/wATr62+KV98R7zxJDY27K+jrYx2aW7TMCMTSl2Yz4ycYx71/Oz/AMFZzj9vP4zD1TSv/TbbVpk81LFzcZcytv8AcPASTxEmpc2m5+cVf04/8EEf+SPftEf9jNpv/pLLX8x1f07/APBBb/kjf7Q2ev8Awk+m5/8AAN69HPv92l8vzR25n/Al/XU3v+C7CaGf2e/hHLdg/wDCRr4uK6eQuT5RtZPOAPbJEH5Cvjf4FaDYaD/wRQ/aa1rx7axQWOt+Mzd+HBMFX7ROjaZbpJCPUvBcpxziKT3r9kv20P2DdI/bX1LwOvjP4w+LvBPhPQYZja6TpemwyCS7lI33Eksj8nakahQoAC+pOY/jD/wTu+Ffxb/Z9+Dn7NMfjv4heA/hp4MVTawaUtqzarOIyouLvzIyGk3vcSfLgbp3PpXh4TMKMKFOk5ap3e+mtzzMPjKcKUIN9bv8z80vBfhvwtdf8EoP2PvAvxi1K18KeDvEnxU06C9nnkEI/siXWLqSWUt0j/dI5z2BB71+utv+xp+yNaaHZ6JF+y/+z3L8MI9KaX+157C2klDrsVR57RGR1MQdzcm4Byo653DzP48f8E7vhl8c/gN8Df2ep/H3jfwX4M8BwRQWEtlb2802omO3WFXuN4ADZEkh24BaRvQV8l/8ORvhwdLj0Rv2pfj2dGVdn2TyLfyNn93y9239KJYyjUV/aOOrfXqweJpTV+e2r7nwN+yb+z1+wH8TP21f2jfBfjTxfpV98LNJvZf+EB0u61s2tjrsZlcSMLzcjSCFRHsUOpkVt3Plmuq/aY/Z6/4Jxaf+2t8APhd4R8Z6L4K8B6lJMPHUem6wZ9N05lDG3jS6ZnEEk0iCN8MVjUqflJNfWw/4INfAAKqj46/GNSO62VkP/Zacf+CDX7PjFd3xy+Mm0dhZWA/9krt/tPD8/N7V7Wt+ux0/XqPNzc72/roeJf8ABTr9mT/gn/8ABr4BWeq/Cuy8I+CfjEby3g0Oz0TW3vptWhJKzCeF5Zf3YUlhNhSHVACdxFfL3/BaW4ig/aY+HnhJsvqGg/D3StOuZf8AnpIHnYFvqDj8a/TnQv8Aght+y7our6Xqc3xJ+N+rQ21xHO1rNcWKx3Kq6sY322+drbQpwc4Jrqf2uv8Agk7pX7WH7QOt/HHVPj94h8JxaklpFc6UNAjujbRwxLHtt5zOm0EICMocEk81GGzKhGSTqN2vq7+RNHHUotXne19X8j8wv+CrHgW78KfBT/gnPNfuPt1p8MrHw/dIO7QWNgT+rtXb/syyfD3w7/wSe1vVvjHavf8Aw4uvjrplzqVuilmubFJNIFxGgHJYw290uBz1r9Lv+ChX7Anj/wDbJ1X4E6P4J8b+BPh/4C8MxXlvdnUIZpbqBZBAqG3iij2yAJBt2mSPnHPp0Gu/8E1PB9/+w9o/7GGkfE3XNNgs9WGvt4ik0yORr2+3yswktQ67YiJQgAk3ARqdxOamOZ0fZQUpa3v6asSx1P2cU31/U+DNX+PX/BC2BsxfA59Tbbz9j8NX8QA+j3Ef8q4q9+O//BDZ9pH7OXjc/wB3ytOvI8/+T4r5w+Kv/BF79sPwJcXL+BrTwN8adFWRhFLpOox2lz5Y5DPa3Xl/Of7qNIPevz2+J37Ovx5+C7OvxW+EHxE8AxIRGJ9S0mSO1Y/wgXG0xn8Gr1aNChNe5Ub/AO3mdtKnTkvdm38z9tfhj47/AOCLPxC+KPw18F+Ff2d/H1v4o1fXrDTNN+1QXgtRdTXEccPnj7ewMZd49wKsNp5BHFfoB/wU38V/sT2Phr4V6N+2boXxI8RW89/f3mgR+G2dJY5FSJZ2kYSICCJIgAc9DX8i/wAOPGN58O/iH4B+IenoGv8AQdbsNXiVTwz200Uqg/8AAkSv6Kv+C+WgxS+DP2efFUDPIkGtatYMoXK+XLDE6nPbPlMK5cRg+XE0lzPW/XyMa1BKtBXfXqfJSa3/AMENF2MfBf7UgPZDLN/8erqrL4qf8EM9Ct4DB8BvjLr5Xp9s+1u34/6egr8K67jwR8M/iP8AE2/l0z4ceAfGHj2+UIHg0bSZrxlDdysatsr05YLvJ/edroLq395+2Un7bP8AwST8F2+PA37Bdz4suQo/5C2lWjBB2Ba5muf5VQt/+Cu/wB8CTSt8I/8Agnz8IvC7t1mJsLd2/wC/Nmp/WvjbwP8A8Eqv27PHRtJYvgjfeD7GUKvn+INStLDywP70Usgl2+wSvsPwX/wQg+OmpSufiD8avhL4QtdmQNLtrrVJQ393Y6W6Y991clR4OHxz/wDJn/mc0/q8fil+L/zOlh/4Lw+JLZVW1/ZU8C26g7dkOvypj6AW2Ksv/wAF7vGW0CL9mLwXEf4fM8Rztt+u2EV614Z/4IJfD6FSfGn7SPjLVn/u6Z4bt7Qfm80tezeHv+CHH7IukyB9b8XfGvxWP7kupWtsn5R2+f1rhlistXn95yyr4Nf0z4wH/Bef4itKjT/s0fDWSA/3dXu8/wDfRGP0rStP+C6zzy20WufsleCLm0P+tKa5k/8AARJbMDX6C6Z/wRs/YVsJhLc+E/iPrUY4EV14lkCAf3cxojY/GvRrb9gv/gnF8MnuLjVvg/8ABzS3tlImPiLW5ZRGAMnet3cFenPIrn+u4J/BFv0v/mR9Zwr0jFs/MMf8FQ/+Cenj/UGv/iv+wXoS6nMczXkegaLqbsP7zFo4nP511/hv4y/8EsPizdmXwL+wR8Zddv8AI2yeF/B8yNEx/uGyvBsP0xX6EQfFT/glx8ExNrOj69+xv4Ru7dC4k0Wx02e6wP7i2sbys3sBmvsj4P8Axd8AfGr4daF8SPhL4kXxF4B1Fp0tLmKCW3DtFK8UimKVUdSHjYcqP1rGtjYwjzKnJLzbRnUxKiuZQkl6tHxr8GZLHQTbj4Rfs/ft6eCNLOwRWviPUY10yFBnA+z6rey7FwSMIAa++NBudZu9HtLjxDpMOh6wciS2S5WfCjGGZkyoY85VWYD19NaivFxeO9qvh+e7PMxGK9ppb/MKKKK4DkCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK/nk/bS/wCCvPxf+Dn7QHxE+EvwV8PfDHUvDOhXCaW2oarZXE87X8af6QAUnRGUSEoMDgKCc7q/cr43fE/TPgr8H/iX8WtXeFLLw/o1zqQEgBWWZUIhjIPXfKY0/wCBV/AXrWsX3iPWtT1/Vpvtep311Jd3EnrJI+5nr6jhzAQqc1SorrY9vKMJGd5zV0ft94F/4LufHPRtNmtfiF8Hfhl481PdiK7tZ7jS2Py/xxr5qH8Ntf0Hfsv/ABC8f/Fr4AfDH4pfE3R9B8PeK/Edi2uDT9OjkWGxsp5Ge1izIzM7eQYWLk8lzwBgV/E3+zD8FdS/aJ+Pnwq+DNhHNHba5q8UF5KpAezsFBe5mGeMrDFK490r+9SzsbDS7Ky0vSrOHTtKtYY7a1t4hhLeFFCpGo7KqqoA9BV8RUaNJKNOKTZWb06cElBWbLNFFFfKHhBRRRQAV/GB/wAFYm8z9vP41f7mkp/5T4K/s/r+LX/gqy3/ABnh8bt3Y6cP/JGCvp+Fv40vT9T2sk/iP0Pzxr+nn/ggr/yRj9ob/satP/8ASN6/mGr+nz/ggv8A8kV/aB/7Gqw/9I2r3s//AN2l8vzPWzT+BL5fmfu5RRRX50fHn4hf8Fnfj78afghpP7Ph+EXxO8YfDkahdav/AGg2k3nkG5Ea2mzeBywG9uPevwZP7e37aRXa/wC058ZmPtrMv+NfsL/wXy/5BX7Mn/XfXf8A0Gyr+cWv0XJKcXh4tr+rn2GXQi6EW0fun/wSl/ap/aQ+LH7YfhnwX8TPjV8SPHXhObQ9Xlk0/U9Tee3Z47QtGxUnBIIBB9a/qFr+P7/gjJ/yfV4P/wCxc1z/ANJGr+wGvneJ4pV1bt/meNnKSqq3YK/CD/gr3+11+0R+zj8Qfg/4c+CnxM1DwDpmpaDc398ttZW8rTzC5ManfKjEfKuAAR39a/d+v5j/APgvP/yWH4B/9ild/wDpbJWHD1OMsTaSvozLKYp1rM+cND/4LN/tv6Toz6Vd+Jfh34huypCaje+HoftEZK9R5eyNj/voa+5P+CR37W/7RH7RH7Tfxb0z4zfFbxN450r/AIQmXUYLC5KRWlpPHqFlGrwWyKqRHZPIpKqM7uc1/OFX7Wf8EJMf8NTfFT1/4V5c/wDpy0+vqszwVOnQm4xS07HvYyhCNKTiktD+qykmVLi2msrlI7mykGJIZFDxyD0ZTwR9aWivzpO2qPj0z8+Pjh/wS9/Y3+OJur+7+GcPw08TSJtGp+EXGnEN2ZrVQbdz7+WCfWvVP2i/2OPhp+0/8HfA3wa+JWueLRpugzafcW+q2LQx3tw9vbGBt5ZGQCVWYtgcHGOlfWdFdizGtp722x0/XKumux8C/DH/AIJhfsP/AAslW7074IaR4y1LyhGbjxTcSasGPdvs8p+zK3usQNfWPj3xv4G+AXwq8W+OtWsY/D3gDw5pcl9cWmkWcaBIIk4jhgXYmThVUcDkdBXpNfGv/BQtd37FH7SC/wDUtTf+hpVU69StVjGrJtNoqFWVWpFTd02j8v8Ax5/wXq8KwOkfwt/Z28Raui/6yfxBrUVr9CIYEkJB/wB8V8W+L/8Agtj+2R4gW9Tw5b/CXwFblvMQ2OiNcSIv/PPfdSSAn3CivyDpJP8AUt/1zr7ylk9CG0F+Z9TTwFGO0T/RdmKmaUqoVSxIA7DNR1JLjzZMdNxqOvzaW7PjJbhX8Gn7YMkkv7Vn7Rkk37x/+E11j/0rev7y6/gy/a+bd+1R+0TtwB/wm2sf+lj19Xwp8U/l+p7uRby+R86V/Y7/AMEec/8ADBHwzz0/tjW8fT7a9fxxV/Y//wAEev8Akwj4Zf8AYY1z/wBLXr0uJP8Ad/mjuzj+D8z9OaKKK+APkwooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD8Nf+C4vxxm8KfBv4ffArSbsw6h4q1A6lqagHJsLX7iHsUedlOPWAetfy41+h//AAVD+O1v8d/2vviDdaReRah4V8OhfDGlyQNujeO2LebIG7h53ncH0xX53M21d392v0zKcN7KjGPW35n2uBo+zpKPU/fD/ghL8Hn1n4l/F3476jaSCx0DSo/D2mSMvyPe3jl5mQ92SC3Cn2uFr+mqvg7/AIJo/BaL4IfsZ/CHR5rR7TxBr1r/AMJdqwZcMbi8VGjDDsVt0tEx/sGvvGvh85xHtMRJrZafcfM5lW56zfRaBRRRXlnAFFFFABX8W/8AwVZRo/28PjdliC39nMF9f9Bgr+0iv47v+Cxnh5tE/bp8c35fFtqujaRfIfpZxxt/49btX03Cz/fSXl+qPZyR/vH6H5cV/Tz/AMEFWJ+DH7Qqdh4p07/0jf8Awr+Yav6T/wDggb4ghk8I/tN+EjLGLmDUdD1JY/4ijw3UbP8ATMafnX0GfK+Gl8vzPYzNfuJf11P6CaKKK/OT44/nc/4L5OfsH7MsY7y66f0sq/nKr98/+C8vjS2u/iX8BPh9CUaXTtCvNYuM/wDTxcCMJ+VmD+NfgZX6TksWsPBPsfZ5crUI3P1V/wCCMv8AyfX4O/7F3W//AEiav7A6/kJ/4Iu29zP+3H4ekjBMUHhjW5JD6J9nEY/Vo6/r2r5vij+OvT9WeJnX8VegV/MZ/wAF5/8AksvwE/7FC6/9LZK/pzr+Yv8A4Ly/8ln+Av8A2KN1/wClz1hw3/vS9GZ5P/G+R+DdftZ/wQk/5On+Kn/ZPLn/ANOWn1+Kdftb/wAEKDj9qn4pJnb/AMW+vPl9P+Jnp1fX5t/An6M+hx/8GXof1V0UUV+ZHxQUUUUAFfHH/BQjj9ir9pE/9SzP/wChLX2PXhX7UHhdfGn7N3x88MNEsz3Xg7WFjQ9GkW0kZB/30q104N2rQb7r8zbDO1SL80fwOUyX/UyfSn02RS0e1cfcr9XPuj/RaDiULMv3XAcfQjP9aK83+DXi63+IHwc+EPj21WVLbW/Cukauiv8AeUT2UUuG9xvwfcV6RX5HWjabXmfBVFaTQV/BP+1k/nftO/tCTfufLbxjrI/8nHr+86/1LT9Hsb3V9WnFtpVrE9zcyHpHEgLO34AE1/nwfEPxE3i/x9458Wby51LVr2//AO/ju9fV8KRd5v0/U9zIo/E/Q5Cv7H/+CPf/ACYT8M/+wxrf/pa9fxwV/ZZ/wSGtXtv2BPhBM42i5v8AW7hR6D+0Zk/nG1ehxK/9n+aO3OP4PzP0sooor4A+TCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK+fv2rPi3D8Cv2cvjJ8VGvTY3+laFcHT5FYBxfyDybbZnqRNLEcegNfQNfgD/wAF0fjjPpXhP4U/s86VO8MmqTP4o1f5l2tbwl4beMjr80huGx6xIa9DK8N7WvGPTf7jrwFH2lVRP5qppp7maS4upPNuJN7u/wDvfxNXtP7OXwevPj/8dfhP8G7GS5t/7f1q1066uIiBJaWu4NcTBTwxjhWV/wDgFeI17d+zt8d/Fv7M3xi8IfGjwPp+h6l4k0g3Aitb+LdA8c1vJBKrgEMMpKeQQRX6bU5uV8u59nO9nbc/vnigtbWKG1sbeOzsYkWKCFBhYY1GFRR2AAAA9qfX8sf/AA/a/aQz/wAkk+CeP+ud/wD/AB+pP+H6/wC0h/0ST4J/9+7/AP8Akivg3w3iXrp958u8mrPsf1MUV/LT/wAP2P2jf+iRfBX/AL4v/wD4/Tf+H7f7Rf8A0SP4K/8Afu//APj9L/VrE+X3i/sat5H9TFFfzAeHP+C5X7Rera7omln4NfBu+e5vIrcQRG+jeYu6r5akzHDZbriv6hLiMRTzRAEBXKjPXg152Ny2ph7e0tqcuKwU6NufqRV/ND/wXf8Ahff2fj34LfGO3ssaNf6TN4euZ4zkrc28rzKHHbdHcnH/AFxPpX9L1fG37e/7Ocn7T/7MPxB+HelWkd142t411rw4CoJbUbcMViGe8qNNCB0zIpPStMoxKpYiMns9PvLy6v7Oqm9nofw4V+kH/BLv9qXSv2Yf2l7O88ZXUVh8MvFNoPDuuXJ+5pxZ1aC6/wBxJUUMe0cjHsK/OSeGa2nltriM29xGXR0/557fvLUVfpNajGpBwlsz6+pTUouMtmf6KdvcW93b295aXFveWc0azQzROHjmjYZV0YZDKQQQRwQcis3xB4g0PwnoOteKfE+rWGgeG9OtZL2/vrqQJDaQIMtI7HoAB+PQZJAr+In4I/8ABQH9rT9nvw7aeEvht8W9St/CEDbbXSdRtoL61tV/uwrcK/lL7IQKzPj1+3N+1B+0tpdv4f8Aiv8AFLU9U8MBhKNJsYIbGxkkHTzIIVAlYdvMJxXx64Wnz6yXL+J8+sjlzfFoZ/7Z/wC0NeftQ/tGfEX4sqLmDQrm4+yaLCyhWttMhHl26kD+NkXzG/2navleitbQtH1TxJrOkeG9A06+1XW7+6htLS1gj3zXM0j7Y0RP4mZnRVr7GEFGKitkfQxioqy2R+8X/BB74UX198RfjX8cLiN49H0zQoPC1qxT5Zrq6mjuJCreqRWcYP8A13Ff0wV8mfsQfs4x/sr/ALNXw++FF1Fbr4uETar4kkibesmqzhTMof8AiWILHArd1hB719Z1+aZvilVruS2Wh8dmNdVKra2Cv5j/APgvP/yWD4Cf9ipdf+lr1/ThX8xf/BeY/wDF5PgIvH/IpXP/AKXPXbw3/vPyZvk/8b5H4N1+un/BFLxxoXhL9s2fSdcvRY3HiXwfqGg6YXwokuvPtrpYyegLLZSqo6ltoHJr8i6u2F7e6Td2mo6Zdz6bqkEiTwTwS7HhdfmV0dfmR1r7bF0VUg4Pqj6itTU4OD6n+iXRX8ZXhT/grV+3Z4RsbfTj8W7bxNBEFRH1jRLO5lZBwA8zxCRifUkmu2i/4LP/ALc68P4n+HM3/crW/wD8TXyEuFq3SS/H/I+ceSVO6P6/6K/kG/4fO/ty/wDQy/Dj/wAJe2/wqOT/AILPftzFSB4p+HEZ9V8LWx/mKX+q9f8AmX4/5B/YlXuj+v2o5be1u4pbW+hFxZSqY5oz0dCMMPxBIr8R/wDglt+33+0V+1j8WfiP4B+L58Iav4e0zwydYt72w0lLOaC5F3bwqjGM7WR0mkbBGQV61+3leLi8JPD1OSW552Iw8qM+WW5/n+fG/wCH+ofCr4xfFH4b6lFJBd6Dr17prgptJEcrBcr3BCgg+9eVV+6f/Bav9ly48E/E3RP2mPC9kE8J+KmjsNb2IAlnrEUYCO3OcTxJuJ7vA59K/Cyv0jA4hVaaqLqj7LD1lUgprqf1qf8ABHX9qPw78T/2d9F+Auua7FH8UvBIntILS6uB5+p6Q0rywywKcFlgEjW7KudixRE8Nx+wlf55nhPxb4p8BeJNH8YeDNe1Pwt4msZVlsb+wuGiuLRh0ZWX5lB5r9BrH/grp+3hYaOmk/8AC3NLv2+79sufD+nPcgbcZLmHk55yRmvAzDhyVSo6lNpX7nk4zKHObnB7n9Bn/BUP9qHRf2eP2Z/FugWesRQfE/xhZzaFolnGQ0yQSqUursp2jSIyKGOAXZQOhx/GRXo/xP8Aiz8R/jR4vvvHvxV8Z6z438XXKqJLu+dXyqjCpGMBVUDoqAAV5xXt5Xlqw9PkTu+p6OCwqow5eo7n+Hjd8mxK/vB/Y3+FDfBD9lb4CfDC4tWstT07w5bTahE3WO+ud13cqfcTXMo/Cv5Zf+CYn7JNx+1B+0Ho2p6/Zib4TeD5rbXPEJdAY7xwxNvYDs3mvGQw/wCeSP3UV/Zi7tI7yOdzsSSfU18/xRil7tFer/Q8rO660pr1G0UUV8gfPhRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFfxK/wDBSn4s6l8Xv2zvjTqN35iabpGpnwzp8LKxEVtZnyRwO8jqZD7ua/tqr5k8afsXfsmfEXxTq3jfxx+z38NPEfi2/kM19fzWjJJeSk5MkgRlVnJAJcjcTySa9jJ8fTw8nKa3PRy7Fwoybkj+EKiv7k/+He37D3/Rr/ws/wC/E3/xyo/+HeP7Df8A0a78LP8AvxP/APHK+i/1no9n/XzPX/tql2Z/DhRX9x//AA7x/Yd/6Ng+F3/fmb/45T/+Hen7Dv8A0a98K/8AwHm/+OUf6z0ez/r5h/bVLsz+G2iv7k/+He37D3/Rrvwq/wDAeb/45Uf/AA7x/Yb/AOjXfhZ/34n/APjlH+s9Hs/6+Yf21S7M/lj/AOCavwLvfjt+178JtDezubnwxol6virXZVPy21paMsiBj28ycQQYHOWU9jX9s7u0js7HLMSSfevJvhT8CPgt8C7PV7H4OfC/wd8N7fUHje/Ol2ux7woCEEkjEuyrlsKTgZOBzXq9fN5vmKxE04qyR4+YYz20k1sgoooryTzz8Df+CmX/AAS81j4i6xr/AO0b+zXo1td+LJYzdeJfCVvFtfV5V5a7sQMAzsBl4RhnI3IdzFT/ADUalpt9pN7dabqtjc6ZqUEhjntJ4nheIj+B0b5kf/Zr/RJr5z+OH7JH7N/7RyPJ8YvhL4Z8U6uU2Lq0ata6jGPa6hKyNjsHLAelfU5dxG4RUKyul1Pcweb8q5amvmfwZ0V/Vv4q/wCCGn7K2sahNe+F/H/xn8E27cC1W6tb2OMeimSJX/NjS+Ef+CGv7K+h6nHfeKvH/wAZvHdmv/Lm11bWMb/77RxNIfwYV7X+sOGte/4M9L+1qFr3P5b/AAj4Q8UeP/Eej+DvBPh3WfFXii+lW3tLDT7dri4nYjIVYl+ZgBk57V/VB/wTe/4Jjwfs2z2Pxt+OUOla38c2hI0vTYgktt4SVhhmDj5ZLtgcb1+WMEhSSSw/Sb4Ofs4/Ar9n3T5NP+DXwt8J+AvMjEU11a2++8uVAxiW6kLSuOBwWx7V7VXhZpxC6sfZ0VZd+p5WNzZzXLT0QUUUV8yeMFfzP/8ABefR9ST4lfs++I2srsaPJ4fv7BLgrmN5o7kSNGp7OFmVv++a/pgrjvHfw7+H/wAUfD8nhT4l+B/CfxA8MtIsxsNZ0+K7hEg6OqyA7WGT8y4PvXflmMVCqqjV0deBxKpVFN7H+exRX9z0n7Af7Ecjbm/Za+DoP+zpzL+gYVD/AMO/P2If+jXvhP8A+Akv/wAcr6v/AFno9n/XzPd/tql2Z/DPRX9y/wDw77/Yh/6Ne+FH/gLL/wDHKT/h3z+w/wD9Gu/Cf/wFl/8AjlH+s9Hs/wCvmH9tUuzP4aaK/uV/4d8fsP8A/Rrvwo/8BZf/AI5Vu1/YF/Ynsrq3vLb9l74QrPEQybrBnUEHIJRnKt+INH+s9Hs/6+Yf21S7M+HP+CK37Omr/Cz4B+KPjP4otZrHWfH9xbS6bbyKFMej2okEMuMZHnSTzN7pFC3ev2bqK3t7e0t7ezs7e3s7OGNYYYYYwkcMagBURRgKoAAAAwAABUtfH43FOtVdR9T57E13Vm5s8/8Ain8LvA/xp+H3ij4X/EfRIPEHg3WLY213btwy91kifqkqMAyuOhA6jIP8dP7a/wDwT6+Lf7IHiO61GbTr7xr8HLiYjS/FNpATEinpDeKM/ZpgMjaco/VCecf2rVBd2tpf2l3p+oWlpqGn3EZint7iJZIp4z1V0YFWU+hBFdeWZrPDu28X0OnBZhKi7bo/zrqK/tB+Lf8AwSo/Ym+LVxqGpv8AC+4+G+u3CBftfhO+fT0Rgc7hakPbA/SMV8sSf8EIf2bmkZovjN8coYjwEYWDlR6ZEKj9K+sp8RYdrV2+R7sM3otaux/LLX2R+yN+xH8av2xPE6ab4D0v+wvA1pKI9U8T6hAw0/TVxlk4P72c8fuU+Y5ySo5r+lP4O/8ABIb9jD4UXNpqer+FPEfxg1mB98Unim/Etuh7f6JAsUT4/wBsPX6W6RpGkeH9LsdD0DSdL0HQ7VBFbWVlbpBb2yD+GOJAFUewFceL4mglairs5sRnUUrU1dnjX7OH7O3w4/Zc+FOhfCX4ZWDQ6TbZnvb6ZVFzrN4wAkurgrwXbaAFHCKqqOFr3WiivjatWU5OUnds+dnNyfNLcKKKKgkKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACuZ8Q+NvBPhGaxt/FvjTwf4UuLkgW0eqarb2j3HOPkWV1Lc8cV1MQBkjBUOCw+UnGfbPavx6/Yd+CPwU/an8AfFP4v8A7RXgbw58aPjxqXi3V7HxIviGI3M/hqKKbbb2dvE2PsiLFtYNGFJz975cDuwmGhKMqlRuyttvqdWHoRlFznsux+wQIIVlZXQgMrKchgRkEEdQRzmuV13x34F8LX9npfijxx4L8MapcANBa6lq1vazTA9CkcjqzA+oGK20tE0PSE0/QdJtYI7G0EFhp8MQjiQRx7YoEQYCqNqoAMACvyN/Yn/Zv/Z1/aR/Z91v4wfHnwroPxn+MPiDU9VHjXVtffzLzQblJ3UW8bkg2WyFYZAy7Dhgc4AArDYWEoyqTb5U7ab6joUIyi5ybsux+wRBHUdgfqK5XxB468C+Eri1s/FvjnwT4VvJ4/Nhh1PV7e0kmTdt3KkrqSuQRkDGa+Jv+Ca+uajqf7P3ifRE8RX3jLwH4e8da54e8HaxczGWTUNChkjMB3nllRpJowfRAOgr5R/atsvD+of8FLvhpbeJv2cLr9qPTf8AhVNwy+G4ba2uWhk+3Tf6UYrnETbR8nzH/lpxzit6OWp15UZP4Vf+rmtPBJ1ZU29j9m9F17QfEunpq3hrXtD8SaSztGt1p15HdQl1+8vmRsy7hxkZyM1ja58Qvh74YvRpvif4geA/DWpbFk+zajrVtbTBScBvLkdWwexxzWD8HvC3hPwl8N/C9n4O+EumfAzTLu3TU5vC9tY21odKuZkUyRzJbgRmUYCsw67R6V+Svxps/DF9/wAFJvixF4m/ZDvf2toh8PdEMVjDY2l0dHbDfvtl1+6w4Pl5PzZHHeowuBhUqyhrZen/AAxNDDRnUlHovT/hj9ptK1bSde0601jQdW0vXdHuAWgu7K5S4gnAYqSkiEqwDKynB4II7Vzmt/Ej4b+GdQl0jxL8R/h74d1aNUeS0v8AXLW3mjVxlS0ckgYZHIyOateCPCvhfwT4Q8PeGPBfgvSPh14ZtrcPbaHY2kNrDphlJmkiEUP7tWEkshbbwWLHnNfkBJ8OIPH/APwUG/bKF1+yV8PP2ooLbTvC48zXL6xt/wCxS1j92JbpJFYyc7iFBHkgZpYTBQqTkm3Zenf7gw+GjOUk9l6f8Mfs9Y31hqllaanpV/YarplxGJbe5tZ1mhnQ9GSRCVYe4JrltZ+JPw28O6jNpHiH4kfDzQNXjCmS0vtctbeeIMNy7o3kDLkEEZHIrc8PeG9F8HaBovhXw34b0rwfoNhax29ppVjBHDb6cgGfKjSMKgVSSPlAB696/FTSPh1a/EH/AIKEftztcfsmfD79qIWcXhjB168srddELWJ/1Quo5FYy7OSACPJHOKMHg4VJyTbsvTvb0FhsNGcpJvReh+3VneWWo2dpqOm31lqenXEazQXNtMssU6HoySKSrKfUEirFZOgeHNF8H6Do3hbw54e0rwloNhax21ppdjAkNvp8YH+qiSMKoVSSPlAB6961q86aSk0tjkmkm0jm/EPjTwX4RFsfF3jPwf4T8/d5I1TVILQzYxnYJXXdjI6Vq6Vq2k67p9vq+hatpWu6RNnyruxuUuIJccHbIhKnHfB4r8lv26E8PJ+2l+xvP4o+CF/+0RpI0LxGW8M2tlDeTSsEBWVbeYiOTYRv2scfL64rX/4JeadBrF9+1f8AFzwN4ei+F/wO8R+LobXw54H8wLJ4fubSJxdvLaoPLtXk8+3/AHaHoMYAVc+tPLYrD+2vra/lva3c754JKj7S/Q/VyeeC1t7i7u54LS0iQySzSuESJB1ZmOAo9zxWfo+vaD4jtZL/AMOa9oXiKxR/LefT7yK5jR/7peNmAPsea/Nf9siOP4kftZ/sZ/s5/EqWaL9nnxEda1XVrIzyQW/iXU7W1draxndGUuiv5LCPPzGUDkkY5r4sfCz4bfswftf/ALGd/wDs46FY/DLxX4v1+Xw54m8J6IrRWWuaD5X727ns0O1WtxukEuBkx558o0qWXRlFXfvSTa7adxU8HFpXerV/I/WKoILuzuzci0vbK8aCVrecQzLIYJQATG4Una4DAlTgjI4rxj9pP4w2HwA+A3xW+MV+0edC0ea5tUZQwmvGxHbxlT1DTSRAj0Jr8kf+Cfnjv4b/AAR/aF8L/BvQPjRpfxVPxb8D2vi3V2gu1uBpXjKFZHubcup+UyRi7+VsNmKMEcissNlzqUZVV028+5FHBudOU+39M/dzoGJICgEkk4AA5JJ9KwND8WeE/E73kfhjxZ4W8TSW+PtC6bqUN0bfJwN4jZtuTxziuD+PfwzPxm+CnxS+FS+JLjwc+v6LcaauqRZzYs4wrtgglCcKwBBKswHWvgX9mi78Hfs6fHX4X/s1/E39l34afCH486v4VurHQvGng0xzaf4rs7SPzZ1nOyOaKYi0Mh80OxYYyofFLDYONSlKd/eXT+v0FQw8Zwcr6rofqTqGpabpNpNqGr6npmj6fHjzLi8uEgiTJwMu5Cj86xNG8ceBvEd3/Z/hzxz4K8RahsMn2ew1e2uZSgGSwSNyxAHOcdOai8beAvA/xL8P3PhH4i+D/DXjrwrPIkk2natZx3VvI6nKsY3BG4Ho3UdiK/K//gkt8FvhJovwx+IXxG0zwB4V/wCE9sviJ4k0Sy1uSyR76ysYxDGtvFO4LxpsdgQpGdxznNTRw9OVGVSTd1+uwqVGDpym27o/XG+1DTtKtJ9Q1bUdO0nT4gDJcXdwkMUYJAG53IUckDk96x9G8Z+C/Edy1l4c8aeDfEV6IzKYNP1a3uZAgxltkbk7eRzjHNfm7/wWKO39hbx//wBhXSf/AEqSvoD9mL4L+EvBs0nik/sV/DD9mbxRDp0Fta6jpt3p95eXiyJieIvbp5kYGxMlmJbPNaU8HD6v7aT117FRw0fY+0b1+R9dX2oadpdrLfarqOnaVYpjfPdTpDGmTgZdyAMkgdar6Xrmh67HNLoOu6Hr0UePMaxvIrgR56bjGxxntnrX5i/8Fhtn/DG90sls99GfFmiBrZetyPPP7v8AGvEfgla+CvF3/BRD4d6d8Bf2fL79kceCPCV7qPj/AEq7tYNMm16zuoFitrf7HbllmCyz27+cxBwMnkKDrhssjOh7Vu2/poaUcEpUvaN9/wAD9s7q8srGJbi/vbHT7cyJEJLiZYkLscKgZiBuJ4A6ntRcXdlZ3FlaXl9Y2V3cyNDbQzTJHJdSKu5kiViC7ADJC5IFeVfHn4N+Gv2gPhD47+EXitI007WbF4IbopufTrsfNBdR9w8UgRxjBOCM4Jr87f2GdC+Lnx8+K2v/ALQX7S11omqeJ/hf9o+Fnhi3tEJjTUoY1TVNVcsPmnmDRqHHGJXGBsBrnoYWE6TqOVuXf9DGjh4yg5t7f0j9b6KKK885AooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAr45+KX7BH7MPxe8Y3/j3xJ4M13QvFN9L52rT+HtbudLXXHzkteRwsElZsfM+A7d2J5r7GorajiJ03em7GtKtODvB2KOl6dZ6NpelaNp0csOnWVrDZ26vK8rLFGgRA0jlnc7VGWYlieSSTmvjz4i/wDBPr9lb4neM9V8d674G1zRda1KY3Gsw6Frt1ptnrkhOWe7toXEbsx5ZlClupJPNfaNFOliqkG5QlZsKdecHeLszmPBfgrwh8OfCuh+BvAPhrR/B/g7TYfs9hpthCIoLVNxYhVHcszMWOSzMSSSSa5eT4N/D2X4y2Xx+fSr/wD4Whb+HZPC0d2Lx/I/s95xOymD7hfePv8AXHFen0VKrzTbT1e5KqyTbvuFed6X8KfAujfFHxf8ZtO0y8i+IWu6VZ6NqV0127RS2tucxBYSdqMOMsOTgV6JRUwqSjez3FGbV7dQr4/+I37DHwC+JvxK8SfFzWf+FpaD481eK2h1G70LxXdaetykMaxoDHGcAbUXPr1r7Aoq6GInTd6bsXSrSg7wdjj/AIfeBdC+GXgnw38P/DEuu3Gg6VA1vbSanfyXt1IpkaQmW4kJZ23SNye2B2r5t8dfsLfAPx/8S/FXxdvpPiv4a8e62tuup3eg+LbvTluREiogKRnAGEXIr7Coq6eMqxk5xlZscMROMnJPVnNeDfCeleA/CXhzwVoc+t3Wj6XaraW8upX0l5dSqCTumuJCXkclj8xrpaKKwnNybk92ZSk27s851r4TeBfEPxP8BfGPVdOv5viB4Zsb/TtIuUvJEhhgu0CTB4QdshIBwT0zWZ8Ofgf8N/hN4m+KnizwHpep6LqHjPU49a1y3+3O9m98oYNPDbn5YXfed+3AbavHAr1mitfrNTl5b6bGnt52tfTY8s+L3wT+F3x58KDwX8WPCNl4s0NJ1u7bdJJDcWFwvSa2uImWSGQDjcrDI4ORxXn/AMJP2R/gT8FfFmofEDwf4Z1nVPiDc2/2Q6/4g1i51fUILfG0xQz3LsYUIwCEwWAwSRxX0nRTjiqih7NSdgjXmo8ieh5v8UvhH8PfjT4f0rwp8TNCfxL4atNXs9cWxNzJFDcXNsxaIXCoR50QZtxibKsVXI4rmvF/7N3wL8car8Pte1v4Z+GLPXfC2tWevaFfaVbJp9xZXVu4eMeZAFLRZVd0TZVgBxwK9topU8VUikoyasEa846JnL+N/BPhP4k+EfEPgPx3oNj4n8H6rbm11Cwud2y4jyGAypDKQyqwZSCpUEEEV4p8Nv2Sfgh8LPG1j8SNA0bxVr3jmz09tK0zUvEXiG91iXRbNlKtDZ/aZHECspKkqNxUkZwTn6ToohiakYuEXZMI1pxjyp6MK8r+EHwW+HXwI8Nax4R+GOkXmjaFf61eeILmOe6e4Z725KmVgzchf3aAL2xXqlFZxqSUXFPRkKbSaWzPJ/jZ8EPht+0P8PdU+F3xY0a813wbeSwTzQW95JayeZFIJEZZIyGGCo+tcv8ADH9mvwD8Jddstf8AC3ij41ahJbWsllBZa1411DUbGOJl24+yzOYyVH3SRletfQFFawxdSMOSL0NI4iajyJ6Hlnxi+C3w6+Pfg7/hAfijpF7rXhgX1rqQht7yS1cXEEgkjYSRkNgEcjuDUmsfBn4ca58Y/C3x9vdCng+KukWF1pVtqVrdSQC4sp1cNb3ManbPGGkLqHB2sFIPyjHp9FTDE1IrlT01/HcmNaSVkwrz74d/CzwN8KLXxdZeA9KudJtdd8Q3vijUllupJ/N1G62ec6lydinykwg4HPrXoNFQqkknFPRkqbSaWzCiiioJCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//9k=" alt="ZULU Coffee Roastery logosu">
+    </div>
+</header>
+
+<main class="menu-container">
+
+<!-- 1. DÜNYA KAHVELERİ -->
+<div class="category-wrapper">
+<button class="category-card" onclick="toggleCategory(this)">
+<svg class="mask-icon" viewBox="0 0 100 120" aria-hidden="true">
+<path d="M50 5 L61 16 L76 14 L80 29 L92 39 L83 53 L86 70 L72 78 L68 99 L50 113 L32 99 L28 78 L14 70 L17 53 L8 39 L20 29 L24 14 L39 16 Z" fill="#2A0E08" stroke="#D9A45B" stroke-width="2"/>
+<path d="M50 12 L39 28 L61 28 Z" fill="#F28522"/><path d="M25 35 L43 42 L39 55 L22 50 Z" fill="#28825A"/><path d="M75 35 L57 42 L61 55 L78 50 Z" fill="#D9381E"/>
+<path d="M50 34 L42 66 L50 76 L58 66 Z" fill="#E8D2B5"/><path d="M28 61 Q39 49 47 62 Q39 75 28 61 Z" fill="#F28522"/><path d="M72 61 Q61 49 53 62 Q61 75 72 61 Z" fill="#F28522"/>
+<circle cx="38" cy="62" r="3" fill="#1A0804"/><circle cx="62" cy="62" r="3" fill="#1A0804"/>
+<path d="M38 84 Q50 76 62 84 L57 91 L43 91 Z" fill="#D9381E" stroke="#E8D2B5" stroke-width="2"/><path d="M39 98 L50 91 L61 98 L50 106 Z" fill="#28825A" stroke="#E8D2B5" stroke-width="1.5"/>
+<path d="M14 25 L23 31 M86 25 L77 31 M13 78 L26 82 M87 78 L74 82" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+</svg>
+<span class="category-title">Dünya Kahveleri</span>
+</button>
+<div class="items-box"><ul class="items-list" data-category="world"></ul></div>
+</div>
+
+<!-- 2. SOĞUK KAHVELER -->
+<div class="category-wrapper">
+<button class="category-card" onclick="toggleCategory(this)">
+<svg class="mask-icon" viewBox="0 0 100 120" aria-hidden="true">
+<path d="M50 5 L61 16 L76 14 L80 29 L92 39 L83 53 L86 70 L72 78 L68 99 L50 113 L32 99 L28 78 L14 70 L17 53 L8 39 L20 29 L24 14 L39 16 Z" fill="#2A0E08" stroke="#D9A45B" stroke-width="2"/>
+<path d="M50 12 L39 28 L61 28 Z" fill="#F28522"/><path d="M25 35 L43 42 L39 55 L22 50 Z" fill="#28825A"/><path d="M75 35 L57 42 L61 55 L78 50 Z" fill="#D9381E"/>
+<path d="M50 34 L42 66 L50 76 L58 66 Z" fill="#E8D2B5"/><path d="M28 61 Q39 49 47 62 Q39 75 28 61 Z" fill="#F28522"/><path d="M72 61 Q61 49 53 62 Q61 75 72 61 Z" fill="#F28522"/>
+<circle cx="38" cy="62" r="3" fill="#1A0804"/><circle cx="62" cy="62" r="3" fill="#1A0804"/>
+<path d="M38 84 Q50 76 62 84 L57 91 L43 91 Z" fill="#D9381E" stroke="#E8D2B5" stroke-width="2"/><path d="M39 98 L50 91 L61 98 L50 106 Z" fill="#28825A" stroke="#E8D2B5" stroke-width="1.5"/>
+<path d="M14 25 L23 31 M86 25 L77 31 M13 78 L26 82 M87 78 L74 82" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+</svg>
+<span class="category-title">Soğuk Kahveler</span>
+</button>
+<div class="items-box"><ul class="items-list" data-category="cold"></ul></div>
+</div>
+
+<!-- 3. WINTER -->
+<div class="category-wrapper">
+<button class="category-card" onclick="toggleCategory(this)">
+<svg class="mask-icon" viewBox="0 0 100 120" aria-hidden="true">
+<path d="M50 5 L61 16 L76 14 L80 29 L92 39 L83 53 L86 70 L72 78 L68 99 L50 113 L32 99 L28 78 L14 70 L17 53 L8 39 L20 29 L24 14 L39 16 Z" fill="#2A0E08" stroke="#D9A45B" stroke-width="2"/>
+<path d="M50 12 L39 28 L61 28 Z" fill="#F28522"/><path d="M25 35 L43 42 L39 55 L22 50 Z" fill="#28825A"/><path d="M75 35 L57 42 L61 55 L78 50 Z" fill="#D9381E"/>
+<path d="M50 34 L42 66 L50 76 L58 66 Z" fill="#E8D2B5"/><path d="M28 61 Q39 49 47 62 Q39 75 28 61 Z" fill="#F28522"/><path d="M72 61 Q61 49 53 62 Q61 75 72 61 Z" fill="#F28522"/>
+<circle cx="38" cy="62" r="3" fill="#1A0804"/><circle cx="62" cy="62" r="3" fill="#1A0804"/>
+<path d="M38 84 Q50 76 62 84 L57 91 L43 91 Z" fill="#D9381E" stroke="#E8D2B5" stroke-width="2"/><path d="M39 98 L50 91 L61 98 L50 106 Z" fill="#28825A" stroke="#E8D2B5" stroke-width="1.5"/>
+<path d="M14 25 L23 31 M86 25 L77 31 M13 78 L26 82 M87 78 L74 82" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+</svg>
+<span class="category-title">Zulu Winter Seri</span>
+</button>
+<div class="items-box"><ul class="items-list" data-category="winter"></ul></div>
+</div>
+
+<!-- 4. SICAKLAR -->
+<div class="category-wrapper">
+<button class="category-card" onclick="toggleCategory(this)">
+<svg class="mask-icon" viewBox="0 0 100 120" aria-hidden="true">
+<path d="M50 5 L61 16 L76 14 L80 29 L92 39 L83 53 L86 70 L72 78 L68 99 L50 113 L32 99 L28 78 L14 70 L17 53 L8 39 L20 29 L24 14 L39 16 Z" fill="#2A0E08" stroke="#D9A45B" stroke-width="2"/>
+<path d="M50 12 L39 28 L61 28 Z" fill="#F28522"/><path d="M25 35 L43 42 L39 55 L22 50 Z" fill="#28825A"/><path d="M75 35 L57 42 L61 55 L78 50 Z" fill="#D9381E"/>
+<path d="M50 34 L42 66 L50 76 L58 66 Z" fill="#E8D2B5"/><path d="M28 61 Q39 49 47 62 Q39 75 28 61 Z" fill="#F28522"/><path d="M72 61 Q61 49 53 62 Q61 75 72 61 Z" fill="#F28522"/>
+<circle cx="38" cy="62" r="3" fill="#1A0804"/><circle cx="62" cy="62" r="3" fill="#1A0804"/>
+<path d="M38 84 Q50 76 62 84 L57 91 L43 91 Z" fill="#D9381E" stroke="#E8D2B5" stroke-width="2"/><path d="M39 98 L50 91 L61 98 L50 106 Z" fill="#28825A" stroke="#E8D2B5" stroke-width="1.5"/>
+<path d="M14 25 L23 31 M86 25 L77 31 M13 78 L26 82 M87 78 L74 82" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+</svg>
+<span class="category-title">Sıcaklar</span>
+</button>
+<div class="items-box"><ul class="items-list" data-category="hot"></ul></div>
+</div>
+
+<!-- 5. PROTEIN -->
+<div class="category-wrapper">
+<button class="category-card" onclick="toggleCategory(this)">
+<svg class="mask-icon" viewBox="0 0 100 120" aria-hidden="true">
+<path d="M50 5 L61 16 L76 14 L80 29 L92 39 L83 53 L86 70 L72 78 L68 99 L50 113 L32 99 L28 78 L14 70 L17 53 L8 39 L20 29 L24 14 L39 16 Z" fill="#2A0E08" stroke="#D9A45B" stroke-width="2"/>
+<path d="M50 12 L39 28 L61 28 Z" fill="#F28522"/><path d="M25 35 L43 42 L39 55 L22 50 Z" fill="#28825A"/><path d="M75 35 L57 42 L61 55 L78 50 Z" fill="#D9381E"/>
+<path d="M50 34 L42 66 L50 76 L58 66 Z" fill="#E8D2B5"/><path d="M28 61 Q39 49 47 62 Q39 75 28 61 Z" fill="#F28522"/><path d="M72 61 Q61 49 53 62 Q61 75 72 61 Z" fill="#F28522"/>
+<circle cx="38" cy="62" r="3" fill="#1A0804"/><circle cx="62" cy="62" r="3" fill="#1A0804"/>
+<path d="M38 84 Q50 76 62 84 L57 91 L43 91 Z" fill="#D9381E" stroke="#E8D2B5" stroke-width="2"/><path d="M39 98 L50 91 L61 98 L50 106 Z" fill="#28825A" stroke="#E8D2B5" stroke-width="1.5"/>
+<path d="M14 25 L23 31 M86 25 L77 31 M13 78 L26 82 M87 78 L74 82" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+</svg>
+<span class="category-title">Protein Shake</span>
+</button>
+<div class="items-box"><ul class="items-list" data-category="protein"></ul></div>
+</div>
+
+<!-- 6. SOFT -->
+<div class="category-wrapper">
+<button class="category-card" onclick="toggleCategory(this)">
+<svg class="mask-icon" viewBox="0 0 100 120" aria-hidden="true">
+<path d="M50 5 L61 16 L76 14 L80 29 L92 39 L83 53 L86 70 L72 78 L68 99 L50 113 L32 99 L28 78 L14 70 L17 53 L8 39 L20 29 L24 14 L39 16 Z" fill="#2A0E08" stroke="#D9A45B" stroke-width="2"/>
+<path d="M50 12 L39 28 L61 28 Z" fill="#F28522"/><path d="M25 35 L43 42 L39 55 L22 50 Z" fill="#28825A"/><path d="M75 35 L57 42 L61 55 L78 50 Z" fill="#D9381E"/>
+<path d="M50 34 L42 66 L50 76 L58 66 Z" fill="#E8D2B5"/><path d="M28 61 Q39 49 47 62 Q39 75 28 61 Z" fill="#F28522"/><path d="M72 61 Q61 49 53 62 Q61 75 72 61 Z" fill="#F28522"/>
+<circle cx="38" cy="62" r="3" fill="#1A0804"/><circle cx="62" cy="62" r="3" fill="#1A0804"/>
+<path d="M38 84 Q50 76 62 84 L57 91 L43 91 Z" fill="#D9381E" stroke="#E8D2B5" stroke-width="2"/><path d="M39 98 L50 91 L61 98 L50 106 Z" fill="#28825A" stroke="#E8D2B5" stroke-width="1.5"/>
+<path d="M14 25 L23 31 M86 25 L77 31 M13 78 L26 82 M87 78 L74 82" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+</svg>
+<span class="category-title">Soft İçecekler</span>
+</button>
+<div class="items-box"><ul class="items-list" data-category="soft"></ul></div>
+</div>
+
+
+<!-- EK MENÜLER: ZULU İMZA VE YİYECEKLER -->
+<div class="category-wrapper"><button class="category-card" onclick="toggleCategory(this)"><svg class="mask-icon" viewBox="0 0 100 120" aria-hidden="true">
+<path d="M50 5 L61 16 L76 14 L80 29 L92 39 L83 53 L86 70 L72 78 L68 99 L50 113 L32 99 L28 78 L14 70 L17 53 L8 39 L20 29 L24 14 L39 16 Z" fill="#2A0E08" stroke="#D9A45B" stroke-width="2"/>
+<path d="M50 12 L39 28 L61 28 Z" fill="#F28522"/><path d="M25 35 L43 42 L39 55 L22 50 Z" fill="#28825A"/><path d="M75 35 L57 42 L61 55 L78 50 Z" fill="#D9381E"/>
+<path d="M50 34 L42 66 L50 76 L58 66 Z" fill="#E8D2B5"/><path d="M28 61 Q39 49 47 62 Q39 75 28 61 Z" fill="#F28522"/><path d="M72 61 Q61 49 53 62 Q61 75 72 61 Z" fill="#F28522"/>
+<circle cx="38" cy="62" r="3" fill="#1A0804"/><circle cx="62" cy="62" r="3" fill="#1A0804"/>
+<path d="M38 84 Q50 76 62 84 L57 91 L43 91 Z" fill="#D9381E" stroke="#E8D2B5" stroke-width="2"/><path d="M39 98 L50 91 L61 98 L50 106 Z" fill="#28825A" stroke="#E8D2B5" stroke-width="1.5"/>
+<path d="M14 25 L23 31 M86 25 L77 31 M13 78 L26 82 M87 78 L74 82" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+</svg><span class="category-title">Best of Zulu Mocktails</span></button><div class="items-box"><ul class="items-list" data-category="mocktails"></ul></div></div>
+<div class="category-wrapper"><button class="category-card" onclick="toggleCategory(this)"><svg class="mask-icon" viewBox="0 0 100 120" aria-hidden="true">
+<path d="M50 5 L61 16 L76 14 L80 29 L92 39 L83 53 L86 70 L72 78 L68 99 L50 113 L32 99 L28 78 L14 70 L17 53 L8 39 L20 29 L24 14 L39 16 Z" fill="#2A0E08" stroke="#D9A45B" stroke-width="2"/>
+<path d="M50 12 L39 28 L61 28 Z" fill="#F28522"/><path d="M25 35 L43 42 L39 55 L22 50 Z" fill="#28825A"/><path d="M75 35 L57 42 L61 55 L78 50 Z" fill="#D9381E"/>
+<path d="M50 34 L42 66 L50 76 L58 66 Z" fill="#E8D2B5"/><path d="M28 61 Q39 49 47 62 Q39 75 28 61 Z" fill="#F28522"/><path d="M72 61 Q61 49 53 62 Q61 75 72 61 Z" fill="#F28522"/>
+<circle cx="38" cy="62" r="3" fill="#1A0804"/><circle cx="62" cy="62" r="3" fill="#1A0804"/>
+<path d="M38 84 Q50 76 62 84 L57 91 L43 91 Z" fill="#D9381E" stroke="#E8D2B5" stroke-width="2"/><path d="M39 98 L50 91 L61 98 L50 106 Z" fill="#28825A" stroke="#E8D2B5" stroke-width="1.5"/>
+<path d="M14 25 L23 31 M86 25 L77 31 M13 78 L26 82 M87 78 L74 82" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+</svg><span class="category-title">Cloud Series</span></button><div class="items-box"><ul class="items-list" data-category="cloud"></ul></div></div>
+<div class="category-wrapper"><button class="category-card" onclick="toggleCategory(this)"><svg class="mask-icon" viewBox="0 0 100 120" aria-hidden="true">
+<path d="M50 5 L61 16 L76 14 L80 29 L92 39 L83 53 L86 70 L72 78 L68 99 L50 113 L32 99 L28 78 L14 70 L17 53 L8 39 L20 29 L24 14 L39 16 Z" fill="#2A0E08" stroke="#D9A45B" stroke-width="2"/>
+<path d="M50 12 L39 28 L61 28 Z" fill="#F28522"/><path d="M25 35 L43 42 L39 55 L22 50 Z" fill="#28825A"/><path d="M75 35 L57 42 L61 55 L78 50 Z" fill="#D9381E"/>
+<path d="M50 34 L42 66 L50 76 L58 66 Z" fill="#E8D2B5"/><path d="M28 61 Q39 49 47 62 Q39 75 28 61 Z" fill="#F28522"/><path d="M72 61 Q61 49 53 62 Q61 75 72 61 Z" fill="#F28522"/>
+<circle cx="38" cy="62" r="3" fill="#1A0804"/><circle cx="62" cy="62" r="3" fill="#1A0804"/>
+<path d="M38 84 Q50 76 62 84 L57 91 L43 91 Z" fill="#D9381E" stroke="#E8D2B5" stroke-width="2"/><path d="M39 98 L50 91 L61 98 L50 106 Z" fill="#28825A" stroke="#E8D2B5" stroke-width="1.5"/>
+<path d="M14 25 L23 31 M86 25 L77 31 M13 78 L26 82 M87 78 L74 82" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+</svg><span class="category-title">Milkshake & Frozen</span></button><div class="items-box"><ul class="items-list" data-category="milkshake"></ul></div></div>
+<div class="category-wrapper"><button class="category-card" onclick="toggleCategory(this)"><svg class="mask-icon" viewBox="0 0 100 120" aria-hidden="true">
+<path d="M50 5 L61 16 L76 14 L80 29 L92 39 L83 53 L86 70 L72 78 L68 99 L50 113 L32 99 L28 78 L14 70 L17 53 L8 39 L20 29 L24 14 L39 16 Z" fill="#2A0E08" stroke="#D9A45B" stroke-width="2"/>
+<path d="M50 12 L39 28 L61 28 Z" fill="#F28522"/><path d="M25 35 L43 42 L39 55 L22 50 Z" fill="#28825A"/><path d="M75 35 L57 42 L61 55 L78 50 Z" fill="#D9381E"/>
+<path d="M50 34 L42 66 L50 76 L58 66 Z" fill="#E8D2B5"/><path d="M28 61 Q39 49 47 62 Q39 75 28 61 Z" fill="#F28522"/><path d="M72 61 Q61 49 53 62 Q61 75 72 61 Z" fill="#F28522"/>
+<circle cx="38" cy="62" r="3" fill="#1A0804"/><circle cx="62" cy="62" r="3" fill="#1A0804"/>
+<path d="M38 84 Q50 76 62 84 L57 91 L43 91 Z" fill="#D9381E" stroke="#E8D2B5" stroke-width="2"/><path d="M39 98 L50 91 L61 98 L50 106 Z" fill="#28825A" stroke="#E8D2B5" stroke-width="1.5"/>
+<path d="M14 25 L23 31 M86 25 L77 31 M13 78 L26 82 M87 78 L74 82" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+</svg><span class="category-title">Bitki Çayları</span></button><div class="items-box"><ul class="items-list" data-category="herbal"></ul></div></div>
+<div class="category-wrapper"><button class="category-card" onclick="toggleCategory(this)"><svg class="mask-icon" viewBox="0 0 100 120" aria-hidden="true">
+<path d="M50 5 L61 16 L76 14 L80 29 L92 39 L83 53 L86 70 L72 78 L68 99 L50 113 L32 99 L28 78 L14 70 L17 53 L8 39 L20 29 L24 14 L39 16 Z" fill="#2A0E08" stroke="#D9A45B" stroke-width="2"/>
+<path d="M50 12 L39 28 L61 28 Z" fill="#F28522"/><path d="M25 35 L43 42 L39 55 L22 50 Z" fill="#28825A"/><path d="M75 35 L57 42 L61 55 L78 50 Z" fill="#D9381E"/>
+<path d="M50 34 L42 66 L50 76 L58 66 Z" fill="#E8D2B5"/><path d="M28 61 Q39 49 47 62 Q39 75 28 61 Z" fill="#F28522"/><path d="M72 61 Q61 49 53 62 Q61 75 72 61 Z" fill="#F28522"/>
+<circle cx="38" cy="62" r="3" fill="#1A0804"/><circle cx="62" cy="62" r="3" fill="#1A0804"/>
+<path d="M38 84 Q50 76 62 84 L57 91 L43 91 Z" fill="#D9381E" stroke="#E8D2B5" stroke-width="2"/><path d="M39 98 L50 91 L61 98 L50 106 Z" fill="#28825A" stroke="#E8D2B5" stroke-width="1.5"/>
+<path d="M14 25 L23 31 M86 25 L77 31 M13 78 L26 82 M87 78 L74 82" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+</svg><span class="category-title">Zulu İmza Kokteyller</span></button><div class="items-box"><ul class="items-list" data-category="cocktails"></ul></div></div>
+<div class="category-wrapper"><button class="category-card" onclick="toggleCategory(this)"><svg class="mask-icon" viewBox="0 0 100 120" aria-hidden="true">
+<path d="M50 5 L61 16 L76 14 L80 29 L92 39 L83 53 L86 70 L72 78 L68 99 L50 113 L32 99 L28 78 L14 70 L17 53 L8 39 L20 29 L24 14 L39 16 Z" fill="#2A0E08" stroke="#D9A45B" stroke-width="2"/>
+<path d="M50 12 L39 28 L61 28 Z" fill="#F28522"/><path d="M25 35 L43 42 L39 55 L22 50 Z" fill="#28825A"/><path d="M75 35 L57 42 L61 55 L78 50 Z" fill="#D9381E"/>
+<path d="M50 34 L42 66 L50 76 L58 66 Z" fill="#E8D2B5"/><path d="M28 61 Q39 49 47 62 Q39 75 28 61 Z" fill="#F28522"/><path d="M72 61 Q61 49 53 62 Q61 75 72 61 Z" fill="#F28522"/>
+<circle cx="38" cy="62" r="3" fill="#1A0804"/><circle cx="62" cy="62" r="3" fill="#1A0804"/>
+<path d="M38 84 Q50 76 62 84 L57 91 L43 91 Z" fill="#D9381E" stroke="#E8D2B5" stroke-width="2"/><path d="M39 98 L50 91 L61 98 L50 106 Z" fill="#28825A" stroke="#E8D2B5" stroke-width="1.5"/>
+<path d="M14 25 L23 31 M86 25 L77 31 M13 78 L26 82 M87 78 L74 82" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+</svg><span class="category-title">Klasik Kokteyller</span></button><div class="items-box"><ul class="items-list" data-category="classiccocktails"></ul></div></div>
+<div class="category-wrapper"><button class="category-card" onclick="toggleCategory(this)"><svg class="mask-icon" viewBox="0 0 100 120" aria-hidden="true">
+<path d="M50 5 L61 16 L76 14 L80 29 L92 39 L83 53 L86 70 L72 78 L68 99 L50 113 L32 99 L28 78 L14 70 L17 53 L8 39 L20 29 L24 14 L39 16 Z" fill="#2A0E08" stroke="#D9A45B" stroke-width="2"/>
+<path d="M50 12 L39 28 L61 28 Z" fill="#F28522"/><path d="M25 35 L43 42 L39 55 L22 50 Z" fill="#28825A"/><path d="M75 35 L57 42 L61 55 L78 50 Z" fill="#D9381E"/>
+<path d="M50 34 L42 66 L50 76 L58 66 Z" fill="#E8D2B5"/><path d="M28 61 Q39 49 47 62 Q39 75 28 61 Z" fill="#F28522"/><path d="M72 61 Q61 49 53 62 Q61 75 72 61 Z" fill="#F28522"/>
+<circle cx="38" cy="62" r="3" fill="#1A0804"/><circle cx="62" cy="62" r="3" fill="#1A0804"/>
+<path d="M38 84 Q50 76 62 84 L57 91 L43 91 Z" fill="#D9381E" stroke="#E8D2B5" stroke-width="2"/><path d="M39 98 L50 91 L61 98 L50 106 Z" fill="#28825A" stroke="#E8D2B5" stroke-width="1.5"/>
+<path d="M14 25 L23 31 M86 25 L77 31 M13 78 L26 82 M87 78 L74 82" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+</svg><span class="category-title">Şaraplar</span></button><div class="items-box"><ul class="items-list" data-category="wine"></ul></div></div>
+<div class="category-wrapper"><button class="category-card" onclick="toggleCategory(this)"><svg class="mask-icon" viewBox="0 0 100 120" aria-hidden="true">
+<path d="M50 5 L61 16 L76 14 L80 29 L92 39 L83 53 L86 70 L72 78 L68 99 L50 113 L32 99 L28 78 L14 70 L17 53 L8 39 L20 29 L24 14 L39 16 Z" fill="#2A0E08" stroke="#D9A45B" stroke-width="2"/>
+<path d="M50 12 L39 28 L61 28 Z" fill="#F28522"/><path d="M25 35 L43 42 L39 55 L22 50 Z" fill="#28825A"/><path d="M75 35 L57 42 L61 55 L78 50 Z" fill="#D9381E"/>
+<path d="M50 34 L42 66 L50 76 L58 66 Z" fill="#E8D2B5"/><path d="M28 61 Q39 49 47 62 Q39 75 28 61 Z" fill="#F28522"/><path d="M72 61 Q61 49 53 62 Q61 75 72 61 Z" fill="#F28522"/>
+<circle cx="38" cy="62" r="3" fill="#1A0804"/><circle cx="62" cy="62" r="3" fill="#1A0804"/>
+<path d="M38 84 Q50 76 62 84 L57 91 L43 91 Z" fill="#D9381E" stroke="#E8D2B5" stroke-width="2"/><path d="M39 98 L50 91 L61 98 L50 106 Z" fill="#28825A" stroke="#E8D2B5" stroke-width="1.5"/>
+<path d="M14 25 L23 31 M86 25 L77 31 M13 78 L26 82 M87 78 L74 82" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+</svg><span class="category-title">Biralar</span></button><div class="items-box"><ul class="items-list" data-category="beer"></ul></div></div>
+<div class="category-wrapper"><button class="category-card" onclick="toggleCategory(this)"><svg class="mask-icon" viewBox="0 0 100 120" aria-hidden="true">
+<path d="M50 5 L61 16 L76 14 L80 29 L92 39 L83 53 L86 70 L72 78 L68 99 L50 113 L32 99 L28 78 L14 70 L17 53 L8 39 L20 29 L24 14 L39 16 Z" fill="#2A0E08" stroke="#D9A45B" stroke-width="2"/>
+<path d="M50 12 L39 28 L61 28 Z" fill="#F28522"/><path d="M25 35 L43 42 L39 55 L22 50 Z" fill="#28825A"/><path d="M75 35 L57 42 L61 55 L78 50 Z" fill="#D9381E"/>
+<path d="M50 34 L42 66 L50 76 L58 66 Z" fill="#E8D2B5"/><path d="M28 61 Q39 49 47 62 Q39 75 28 61 Z" fill="#F28522"/><path d="M72 61 Q61 49 53 62 Q61 75 72 61 Z" fill="#F28522"/>
+<circle cx="38" cy="62" r="3" fill="#1A0804"/><circle cx="62" cy="62" r="3" fill="#1A0804"/>
+<path d="M38 84 Q50 76 62 84 L57 91 L43 91 Z" fill="#D9381E" stroke="#E8D2B5" stroke-width="2"/><path d="M39 98 L50 91 L61 98 L50 106 Z" fill="#28825A" stroke="#E8D2B5" stroke-width="1.5"/>
+<path d="M14 25 L23 31 M86 25 L77 31 M13 78 L26 82 M87 78 L74 82" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+</svg><span class="category-title">Aperatifler</span></button><div class="items-box"><ul class="items-list" data-category="appetizers"></ul></div></div>
+<div class="category-wrapper"><button class="category-card" onclick="toggleCategory(this)"><svg class="mask-icon" viewBox="0 0 100 120" aria-hidden="true">
+<path d="M50 5 L61 16 L76 14 L80 29 L92 39 L83 53 L86 70 L72 78 L68 99 L50 113 L32 99 L28 78 L14 70 L17 53 L8 39 L20 29 L24 14 L39 16 Z" fill="#2A0E08" stroke="#D9A45B" stroke-width="2"/>
+<path d="M50 12 L39 28 L61 28 Z" fill="#F28522"/><path d="M25 35 L43 42 L39 55 L22 50 Z" fill="#28825A"/><path d="M75 35 L57 42 L61 55 L78 50 Z" fill="#D9381E"/>
+<path d="M50 34 L42 66 L50 76 L58 66 Z" fill="#E8D2B5"/><path d="M28 61 Q39 49 47 62 Q39 75 28 61 Z" fill="#F28522"/><path d="M72 61 Q61 49 53 62 Q61 75 72 61 Z" fill="#F28522"/>
+<circle cx="38" cy="62" r="3" fill="#1A0804"/><circle cx="62" cy="62" r="3" fill="#1A0804"/>
+<path d="M38 84 Q50 76 62 84 L57 91 L43 91 Z" fill="#D9381E" stroke="#E8D2B5" stroke-width="2"/><path d="M39 98 L50 91 L61 98 L50 106 Z" fill="#28825A" stroke="#E8D2B5" stroke-width="1.5"/>
+<path d="M14 25 L23 31 M86 25 L77 31 M13 78 L26 82 M87 78 L74 82" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+</svg><span class="category-title">Şişe & Kutulu İçecekler</span></button><div class="items-box"><ul class="items-list" data-category="bottled"></ul></div></div>
+<div class="category-wrapper"><button class="category-card" onclick="toggleCategory(this)"><svg class="mask-icon" viewBox="0 0 100 120" aria-hidden="true">
+<path d="M50 5 L61 16 L76 14 L80 29 L92 39 L83 53 L86 70 L72 78 L68 99 L50 113 L32 99 L28 78 L14 70 L17 53 L8 39 L20 29 L24 14 L39 16 Z" fill="#2A0E08" stroke="#D9A45B" stroke-width="2"/>
+<path d="M50 12 L39 28 L61 28 Z" fill="#F28522"/><path d="M25 35 L43 42 L39 55 L22 50 Z" fill="#28825A"/><path d="M75 35 L57 42 L61 55 L78 50 Z" fill="#D9381E"/>
+<path d="M50 34 L42 66 L50 76 L58 66 Z" fill="#E8D2B5"/><path d="M28 61 Q39 49 47 62 Q39 75 28 61 Z" fill="#F28522"/><path d="M72 61 Q61 49 53 62 Q61 75 72 61 Z" fill="#F28522"/>
+<circle cx="38" cy="62" r="3" fill="#1A0804"/><circle cx="62" cy="62" r="3" fill="#1A0804"/>
+<path d="M38 84 Q50 76 62 84 L57 91 L43 91 Z" fill="#D9381E" stroke="#E8D2B5" stroke-width="2"/><path d="M39 98 L50 91 L61 98 L50 106 Z" fill="#28825A" stroke="#E8D2B5" stroke-width="1.5"/>
+<path d="M14 25 L23 31 M86 25 L77 31 M13 78 L26 82 M87 78 L74 82" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+</svg><span class="category-title">Pastalar & Cheesecake</span></button><div class="items-box"><ul class="items-list" data-category="desserts"></ul></div></div>
+<div class="category-wrapper"><button class="category-card" onclick="toggleCategory(this)"><svg class="mask-icon" viewBox="0 0 100 120" aria-hidden="true">
+<path d="M50 5 L61 16 L76 14 L80 29 L92 39 L83 53 L86 70 L72 78 L68 99 L50 113 L32 99 L28 78 L14 70 L17 53 L8 39 L20 29 L24 14 L39 16 Z" fill="#2A0E08" stroke="#D9A45B" stroke-width="2"/>
+<path d="M50 12 L39 28 L61 28 Z" fill="#F28522"/><path d="M25 35 L43 42 L39 55 L22 50 Z" fill="#28825A"/><path d="M75 35 L57 42 L61 55 L78 50 Z" fill="#D9381E"/>
+<path d="M50 34 L42 66 L50 76 L58 66 Z" fill="#E8D2B5"/><path d="M28 61 Q39 49 47 62 Q39 75 28 61 Z" fill="#F28522"/><path d="M72 61 Q61 49 53 62 Q61 75 72 61 Z" fill="#F28522"/>
+<circle cx="38" cy="62" r="3" fill="#1A0804"/><circle cx="62" cy="62" r="3" fill="#1A0804"/>
+<path d="M38 84 Q50 76 62 84 L57 91 L43 91 Z" fill="#D9381E" stroke="#E8D2B5" stroke-width="2"/><path d="M39 98 L50 91 L61 98 L50 106 Z" fill="#28825A" stroke="#E8D2B5" stroke-width="1.5"/>
+<path d="M14 25 L23 31 M86 25 L77 31 M13 78 L26 82 M87 78 L74 82" stroke="#F28522" stroke-width="3" stroke-linecap="round"/>
+</svg><span class="category-title">Güne Zulu ile Başla</span></button><div class="items-box"><ul class="items-list" data-category="breakfast"></ul></div></div>
+
+</main>
+
+<!-- SABİT SEPET -->
+<div class="cart-bar">
+<button class="cart-button" onclick="openCart()">
+<span><span class="cart-count" id="cartCount">0</span> SEPETİM</span>
+<span id="cartBarTotal">0,00 TL →</span>
+</button>
+</div>
+
+<!-- SEPET -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCartOutside(event)">
+<div class="cart-panel" onclick="event.stopPropagation()">
+
+<div class="cart-header">
+<h2>Sepetim</h2>
+<button class="close-cart" onclick="closeCart()">×</button>
+</div>
+
+<div class="cart-items" id="cartItems">
+<div class="empty-cart">Sepetiniz şu an boş ☕</div>
+</div>
+
+<div class="price-breakdown">
+<div class="price-line">
+<span>Ürünler Toplamı</span>
+<strong id="cartSubtotal">0,00 TL</strong>
+</div>
+
+<div class="price-line">
+<span>Masaya Servis</span>
+<strong id="cartServiceFee">40,00 TL</strong>
+</div>
+
+<div class="service-info" id="cartServiceInfo">
+Masaya servis seçildiğinde +40 TL servis ücreti uygulanır.
+Gel-Al seçeneğinde servis ücreti alınmaz.
+</div>
+
+<div class="price-line total">
+<span>Genel Toplam</span>
+<strong id="cartTotal">0,00 TL</strong>
+</div>
+</div>
+
+<button class="clear-cart" onclick="clearCart()">Sepeti Temizle</button>
+<button class="checkout-button" onclick="openCheckout()">Ödemeye Devam Et →</button>
+
+</div>
+</div>
+
+<!-- ÖDEME -->
+<div class="checkout-overlay" id="checkoutOverlay">
+<div class="checkout-panel">
+
+<div class="checkout-header">
+<h2>Ödeme</h2>
+<button onclick="closeCheckout()">×</button>
+</div>
+
+<h3>Sipariş Özeti</h3>
+<div class="checkout-summary" id="checkoutSummary"></div>
+
+<div class="checkout-total">
+<div class="price-line">
+<span>Ürünler Toplamı</span>
+<strong id="checkoutSubtotal">0,00 TL</strong>
+</div>
+
+<div class="price-line">
+<span>Masaya Servis Ücreti</span>
+<strong id="checkoutServiceFee">40,00 TL</strong>
+</div>
+
+<div class="price-line total">
+<span>Genel Toplam</span>
+<strong id="checkoutTotal">0,00 TL</strong>
+</div>
+</div>
+
+<div class="delivery-notice" id="checkoutDeliveryNotice">
+Masaya servis için 40 TL servis ücreti uygulanır.
+</div>
+
+<h3>Müşteri Bilgileri</h3>
+
+<input id="customerName" type="text" placeholder="Adınız Soyadınız" autocomplete="name" required>
+<input id="customerPhone" type="tel" placeholder="Telefon Numaranız" autocomplete="tel" required>
+
+<h3>Sipariş Türü</h3>
+
+<select id="orderType" onchange="updateCart()">
+<option value="Masada">Masaya servis (+40 TL)</option>
+<option value="Gel-Al">Gel-Al (Ücretsiz)</option>
+</select>
+
+<h3>Ödeme Yöntemi</h3>
+
+<label class="payment-option">
+<input type="radio" name="payment" value="Nakit" checked>
+Nakit ödeme
+</label>
+
+<label class="payment-option">
+<input type="radio" name="payment" value="Kart">
+Kart ile ödeme (Kasada)
+</label>
+
+<h3>Sipariş Notu</h3>
+
+<textarea id="orderNote" placeholder="Örneğin: Şekersiz olsun, süt eklemeyin..."></textarea>
+
+<button class="confirm-order" onclick="confirmOrder()">Siparişi Onayla</button>
+<button class="back-to-cart" onclick="closeCheckout()">Sepete Geri Dön</button>
+
+</div>
+</div>
+
+<!-- SİPARİŞ ONAYLANDI -->
+<div class="success-overlay" id="successOverlay">
+<div class="success-panel">
+
+<div class="success-icon">✓</div>
+
+<h2>Siparişiniz Alındı!</h2>
+
+<p class="success-message">
+ZULU Coffee Roastery'yi tercih ettiğiniz için teşekkür ederiz.
+Siparişiniz başarıyla alındı. Ekibimiz siparişinizi hazırlamaya başlayacak.
+</p>
+
+<div class="success-order-info">
+
+<div class="success-order-number" id="orderNumber">
+Sipariş No: ZULU-000000
+</div>
+
+<div class="success-detail">
+<span>Siparişi Veren</span>
+<strong id="successCustomer">-</strong>
+</div>
+
+<div class="success-detail">
+<span>Sipariş Türü</span>
+<strong id="successType">Masada</strong>
+</div>
+
+<div class="success-detail">
+<span>Ödeme Yöntemi</span>
+<strong id="successPayment">Nakit</strong>
+</div>
+
+<div class="success-detail">
+<span>Ürünler Toplamı</span>
+<strong id="successSubtotal">0,00 TL</strong>
+</div>
+
+<div class="success-detail">
+<span>Servis Ücreti</span>
+<strong id="successFee">40,00 TL</strong>
+</div>
+
+<div class="success-detail">
+<span>Genel Toplam</span>
+<strong id="successTotal">0,00 TL</strong>
+</div>
+
+</div>
+
+<div class="success-items" id="successItems">
+    <strong>Sipariş İçeriği</strong>
+    <div id="successItemsList"></div>
+</div>
+
+<button class="success-home-button" onclick="finishOrder()">
+Ana Menüye Dön ☕
+</button>
+
+</div>
+</div>
+
+<script>
+
+/* ÜRÜNLER */
+
+const products = {
+    world: [
+        {name:"Espresso", price:120},
+        {name:"Double Espresso", price:180},
+        {name:"Americano", price:195},
+        {name:"Filtre Kahve", price:195},
+        {name:"Sütlü Filtre Kahve", price:200},
+        {name:"Caffe Latte", price:200},
+        {name:"Cappuccino", price:220},
+        {name:"Flat White", price:220},
+        {name:"Cortado", price:200},
+        {name:"Türk Kahvesi", price:195}
+    ],
+
+    cold: [
+        {name:"Ice Americano", price:230},
+        {name:"Ice Latte", price:215},
+        {name:"Ice Filtre Kahve", price:210},
+        {name:"Ice Sütlü Filtre Kahve", price:210},
+        {name:"Ice Mocha", price:230},
+        {name:"Ice White Mocha", price:230},
+        {name:"Ice Flat White", price:230},
+        {name:"Ice Karamel Latte", price:240},
+        {name:"Ice Vanilya Latte", price:230},
+        {name:"Ice Toffe Nut Latte", price:220}
+    ],
+
+    winter: [
+        {name:"Gingerbread Latte", price:155},
+        {name:"Pumpkin Spice Latte", price:155},
+        {name:"Toffee Nut Latte", price:155},
+        {name:"Salted Caramel Mocha", price:165},
+        {name:"Kestaneli Latte", price:165}
+    ],
+
+    hot: [
+        {name:"Fincan Çay", price:100},
+        {name:"Chai Tea Latte", price:200},
+        {name:"Salep", price:200},
+        {name:"Sıcak Çikolata", price:200},
+        {name:"Muzlu Sıcak Çikolata", price:200},
+        {name:"Çilekli Sıcak Çikolata", price:200}
+    ],
+
+    protein: [
+        {name:"Banana Boost", price:250},
+        {name:"Strawberry Power", price:250},
+        {name:"Peanut Muscle", price:250}
+    ],
+
+    soft: [
+        {name:"Su", price:50},
+        {name:"Soda", price:120},
+        {name:"Beyoğlu Gazoz", price:160},
+        {name:"Beyoğlu Turunçgiller", price:160},
+        {name:"Beyoğlu Limon", price:160},
+        {name:"Red Bull Energy Drink", price:190},
+        {name:"Red Bull Sugarfree", price:190},
+        {name:"Red Bull Editions", price:190},
+        {name:"Churchill", price:160},
+        {name:"Limonata", price:230}
+    ],
+
+    mocktails: [
+        {name:"Magnum Daddy", price:300},
+        {name:"Strawberry Popping", price:290},
+        {name:"Nia", price:250},
+        {name:"Shaka", price:260},
+        {name:"Zulu Margarita", price:250},
+        {name:"Pistachio", price:250},
+        {name:"Cool Lime", price:250},
+        {name:"Thandi", price:250},
+        {name:"Savanna", price:250}
+    ],
+
+    cloud: [
+        {name:"Cloud Matcha (Mango, Coconut, Hibiscus)", price:320},
+        {name:"Cloud Espresso Shake (Mango, Coconut, Strawberry, Orange)", price:300}
+    ],
+
+    milkshake: [
+        {name:"Milkshake", price:250},
+        {name:"Frozen", price:270}
+    ],
+
+    herbal: [
+        {name:"Afrika Ateşi", price:190},
+        {name:"Magic of Zulu", price:190},
+        {name:"Green Carnival", price:190},
+        {name:"Nairobi", price:190}
+    ],
+
+    cocktails: [
+        {name:"Kalahari", price:360},
+        {name:"Azure", price:390},
+        {name:"Voodoo", price:390},
+        {name:"Serengeti", price:390},
+        {name:"Jabulani", price:390}
+    ],
+
+    classiccocktails: [
+        {name:"Tekila Shot", price:240},
+        {name:"Jager Shot", price:240},
+        {name:"Cin +", price:360},
+        {name:"Vodka +", price:360},
+        {name:"Baileys +", price:360},
+        {name:"Aperol Spritz", price:390},
+        {name:"Mojito", price:390},
+        {name:"Negroni", price:390},
+        {name:"Lynchburg", price:390},
+        {name:"Margarita", price:390},
+        {name:"Espresso Martini", price:390},
+        {name:"Long Island", price:490},
+        {name:"Viski Sour", price:390},
+        {name:"Viski Tek", price:390},
+        {name:"Viski Double", price:590}
+    ],
+
+    wine: [
+        {name:"Kırmızı Şarap Kadeh", price:290},
+        {name:"Beyaz Şarap Kadeh", price:290},
+        {name:"Blush Kadeh", price:290}
+    ],
+
+    beer: [
+        {name:"Carlsberg 33 cl", price:200},
+        {name:"Blanc 33 cl", price:240},
+        {name:"Frederik (IPA, Marzen)", price:240},
+        {name:"Weihenstephaner", price:240},
+        {name:"Sol", price:240}
+    ],
+
+    appetizers: [
+        {name:"Patates Kızartması", price:260},
+        {name:"Soğan Halkası", price:260},
+        {name:"Mozzarella Stick", price:260},
+        {name:"Zulu Tost (Salça, Turşu, Kaşar, Sucuk)", price:290},
+        {name:"Dana Jambon Sandviç", price:290},
+        {name:"Hindi Füme Sandviç", price:290},
+        {name:"Dört Peynir Sandviç", price:290},
+        {name:"Lüks Çerez", price:290},
+        {name:"Çıtır Tavuk Tabağı", price:390},
+        {name:"Zulu Combo Bira Tabağı (2 Kişilik)", price:490},
+        {name:"Meyve Tabağı", price:390}
+    ],
+
+    bottled: [
+        {name:"Premium Su", price:50},
+        {name:"Premium Soda", price:120},
+        {name:"Pepsi / Pepsi Max", price:120},
+        {name:"Lipton Ice Tea Sparkling", price:120},
+        {name:"Red Bull", price:190}
+    ],
+
+    desserts: [
+        {name:"Aligo", price:270},
+        {name:"Mocha Vişne Stick Pasta", price:270},
+        {name:"Cake and Zulu", price:320},
+        {name:"Havuçlu Lotuslu Rulo", price:270},
+        {name:"White Cascada", price:270},
+        {name:"Beyaz Rüya", price:270},
+        {name:"Snickers Pasta", price:270},
+        {name:"Limonlu Cheesecake", price:300},
+        {name:"Oreolu Cheesecake", price:300},
+        {name:"Frambuaz Cheesecake", price:300},
+        {name:"San Sebastian", price:300}
+    ],
+
+    breakfast: [
+        {name:"3 Peynirli Haşhaşlı Bagel", price:280},
+        {name:"Hindi Füme Tahıllı Panini", price:290},
+        {name:"Dana Jambon Ciabatta", price:290},
+        {name:"Orman Meyveli Bowl", price:350},
+        {name:"Muzlu Kivili Bowl", price:350}
+    ]
+};
+
+/* AYARLAR */
+
+const SERVICE_FEE = 40;
+let cart = {};
+
+function formatPrice(price) {
+    return price.toLocaleString("tr-TR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }) + " TL";
+}
+
+function getOrderType() {
+    const selector = document.getElementById("orderType");
+    return selector ? selector.value : "Masada";
+}
+
+function getServiceFee() {
+    return getOrderType() === "Masada" && getCartCount() > 0
+        ? SERVICE_FEE
+        : 0;
+}
+
+function getProduct(name) {
+    for (const category of Object.values(products)) {
+        const found = category.find(p => p.name === name);
+        if (found) return found;
+    }
+    return null;
+}
+
+
+/* AFRİKAN MASKE İKONLARI — aynı estetikte, farklı yüz ve motifler */
+function africanMaskSVG(seed, cssClass = "product-mark") {
+    const palettes = [
+        ["#3b1d13","#c56d3f","#d6a85f","#e9d8b8","#526b48"],
+        ["#2d1a16","#a94f32","#e0b66c","#f0dfc2","#596b50"],
+        ["#402116","#bd7548","#d7a04e","#ead9bd","#3f6655"],
+        ["#321914","#9e563b","#e1bd78","#f3e4c9","#66764b"],
+        ["#432318","#c16a3d","#d9ad65","#eee0c4","#49664d"],
+        ["#2b1915","#a95736","#d8a45b","#e8d7b8","#5b7354"]
+    ];
+    const p = palettes[seed % palettes.length];
+    const [dark, rust, gold, cream, green] = p;
+    const eye = seed % 4;
+    const mouth = seed % 5;
+    const crown = seed % 6;
+    const cheek = seed % 3;
+    const eyes = [
+        '<path d="M22 53 Q35 39 47 53 Q35 67 22 53Z" fill="'+gold+'" stroke="'+cream+'" stroke-width="2"/><path d="M53 53 Q65 39 78 53 Q65 67 53 53Z" fill="'+gold+'" stroke="'+cream+'" stroke-width="2"/>',
+        '<path d="M21 51 L46 46 L43 62 L25 61Z" fill="'+cream+'" stroke="'+gold+'" stroke-width="2"/><path d="M54 46 L79 51 L75 61 L57 62Z" fill="'+cream+'" stroke="'+gold+'" stroke-width="2"/>',
+        '<path d="M22 55 Q34 42 47 55 L42 64 L27 64Z" fill="'+green+'" stroke="'+gold+'" stroke-width="2"/><path d="M53 55 Q66 42 78 55 L73 64 L58 64Z" fill="'+green+'" stroke="'+gold+'" stroke-width="2"/>',
+        '<path d="M22 52 L35 44 L47 52 L35 61Z" fill="'+gold+'" stroke="'+cream+'" stroke-width="2"/><path d="M53 52 L65 44 L78 52 L65 61Z" fill="'+gold+'" stroke="'+cream+'" stroke-width="2"/>'
+    ][eye];
+    const mouths = [
+        '<path d="M35 83 Q50 73 65 83 L60 94 L40 94Z" fill="'+rust+'" stroke="'+cream+'" stroke-width="2"/>',
+        '<path d="M37 82 L63 82 L58 94 L42 94Z" fill="'+cream+'" stroke="'+gold+'" stroke-width="2"/><path d="M42 88H58" stroke="'+dark+'" stroke-width="2"/>',
+        '<path d="M34 84 Q50 96 66 84 L60 95 L40 95Z" fill="'+green+'" stroke="'+cream+'" stroke-width="2"/>',
+        '<path d="M39 82 Q50 77 61 82 L65 90 L50 97 L35 90Z" fill="'+gold+'" stroke="'+cream+'" stroke-width="2"/>',
+        '<path d="M36 84 L50 78 L64 84 L58 96 L42 96Z" fill="'+rust+'" stroke="'+gold+'" stroke-width="2"/>'
+    ][mouth];
+    const crowns = [
+        '<path d="M27 28 L33 12 L42 25 L50 7 L58 25 L68 12 L74 29Z" fill="'+gold+'" stroke="'+cream+'" stroke-width="2"/>',
+        '<path d="M26 27 Q50 2 74 27 L67 34 L33 34Z" fill="'+green+'" stroke="'+gold+'" stroke-width="2"/><circle cx="50" cy="19" r="5" fill="'+cream+'"/>',
+        '<path d="M25 29 L38 11 L50 25 L62 11 L75 29Z" fill="'+rust+'" stroke="'+gold+'" stroke-width="2"/><path d="M35 22H65" stroke="'+cream+'" stroke-width="3"/>',
+        '<path d="M29 28 L29 14 L43 24 L50 8 L57 24 L71 14 L71 28Z" fill="'+gold+'" stroke="'+cream+'" stroke-width="2"/>',
+        '<path d="M25 29 Q34 7 50 17 Q66 7 75 29 L67 34H33Z" fill="'+rust+'" stroke="'+cream+'" stroke-width="2"/>',
+        '<path d="M27 28 L40 8 L50 20 L60 8 L73 28Z" fill="'+green+'" stroke="'+gold+'" stroke-width="2"/><circle cx="50" cy="25" r="4" fill="'+cream+'"/>'
+    ][crown];
+    const cheeks = [
+        '<path d="M18 67 L34 72 L29 83 L16 77Z M82 67 L66 72 L71 83 L84 77Z" fill="'+green+'"/>',
+        '<path d="M18 70 L34 66 L31 82 L19 84Z M82 70 L66 66 L69 82 L81 84Z" fill="'+rust+'"/>',
+        '<path d="M18 68 L34 75 L27 86 L16 78Z M82 68 L66 75 L73 86 L84 78Z" fill="'+gold+'"/>'
+    ][cheek];
+    const nose = seed % 2
+        ? '<path d="M50 40 L42 72 L50 80 L58 72Z" fill="'+gold+'" stroke="'+cream+'" stroke-width="2"/>'
+        : '<path d="M50 39 L44 68 L50 77 L56 68Z" fill="'+cream+'" stroke="'+gold+'" stroke-width="2"/>';
+    const ornament = seed % 3 === 0
+        ? '<path d="M31 37H69 M35 42H65" stroke="'+gold+'" stroke-width="3" stroke-linecap="round"/>'
+        : seed % 3 === 1
+        ? '<path d="M35 36L42 43L50 35L58 43L65 36" fill="none" stroke="'+cream+'" stroke-width="3"/>'
+        : '<circle cx="50" cy="38" r="5" fill="'+gold+'" stroke="'+cream+'" stroke-width="2"/>';
+    return `<svg class="${cssClass}" viewBox="0 0 100 120" role="img" aria-label="Afrika maskesi">
+      <path d="M50 5 L63 14 L78 13 L81 29 L92 41 L84 56 L86 73 L73 82 L68 101 L50 115 L32 101 L27 82 L14 73 L16 56 L8 41 L19 29 L22 13 L37 14Z" fill="${dark}" stroke="${gold}" stroke-width="3"/>
+      ${crowns}${ornament}
+      <path d="M22 45 Q50 34 78 45 L74 76 Q68 99 50 106 Q32 99 26 76Z" fill="${dark}" stroke="${rust}" stroke-width="2"/>
+      ${cheeks}${eyes}${nose}${mouth}
+      <path d="M18 42L26 47 M82 42L74 47 M23 91L34 96 M77 91L66 96" stroke="${gold}" stroke-width="3" stroke-linecap="round"/>
+      <path d="M43 108L50 101L57 108" fill="none" stroke="${cream}" stroke-width="2"/>
+    </svg>`;
+}
+
+
+/* KATEGORİLERİN HER BİRİNE FARKLI AFRİKAN MASKESİ */
+document.querySelectorAll(".category-card .mask-icon").forEach((icon, index) => {
+    const holder = document.createElement("span");
+    holder.innerHTML = africanMaskSVG(index + 7, "mask-icon");
+    icon.replaceWith(holder.firstElementChild);
+});
+
+/* ÜRÜNLERİ EKRANA YERLEŞTİR */
+
+function renderProducts() {
+    document.querySelectorAll(".items-list").forEach(list => {
+        const category = list.dataset.category;
+
+        list.innerHTML = products[category].map((product, index) => `
+            <li class="product-row">
+                <div class="product-info">
+                    <span class="product-name">${africanMaskSVG(index + Object.keys(products).indexOf(category) * 13, "product-mark")}${product.name}</span>
+                    <span class="product-price">${formatPrice(product.price)}</span>
+                </div>
+
+                <div class="quantity-controls">
+                    <button onclick="changeQuantity('${category}', ${index}, -1)" aria-label="Azalt">−</button>
+                    <span class="quantity" id="qty-${category}-${index}">0</span>
+                    <button onclick="changeQuantity('${category}', ${index}, 1)" aria-label="Ekle">+</button>
+                </div>
+            </li>
+        `).join("");
+    });
+}
+
+/* KATEGORİLER */
+
+function toggleCategory(button) {
+    const wrapper = button.parentElement;
+    const isOpen = wrapper.classList.contains("active");
+
+    document.querySelectorAll(".category-wrapper").forEach(item => {
+        item.classList.remove("active");
+    });
+
+    if (!isOpen) {
+        wrapper.classList.add("active");
+    }
+}
+
+/* SEPET İŞLEMLERİ */
+
+function changeQuantity(category, index, amount) {
+    const key = category + "-" + index;
+    const next = Math.max(0, (cart[key] || 0) + amount);
+
+    if (next === 0) {
+        delete cart[key];
+    } else {
+        cart[key] = next;
+    }
+
+    updateCart();
+}
+
+function getCartCount() {
+    return Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+}
+
+function getSubtotal() {
+    return Object.entries(cart).reduce((sum, [key, qty]) => {
+        const [category, index] = key.split("-");
+        const product = products[category][Number(index)];
+
+        return sum + (product ? product.price * qty : 0);
+    }, 0);
+}
+
+function getGrandTotal() {
+    return getSubtotal() + getServiceFee();
+}
+
+/* SEPETİ GÜNCELLE */
+
+function updateCart() {
+    const count = getCartCount();
+    const subtotal = getSubtotal();
+    const serviceFee = getServiceFee();
+    const total = getGrandTotal();
+
+    document.getElementById("cartCount").textContent = count;
+    document.getElementById("cartBarTotal").textContent =
+        formatPrice(total) + " →";
+
+    document.getElementById("cartSubtotal").textContent =
+        formatPrice(subtotal);
+
+    document.getElementById("cartServiceFee").textContent =
+        formatPrice(serviceFee);
+
+    document.getElementById("cartTotal").textContent =
+        formatPrice(total);
+
+    document.getElementById("cartServiceInfo").textContent =
+        getOrderType() === "Masada"
+        ? "Masaya servis seçildiğinde +40 TL servis ücreti uygulanır."
+        : "Gel-Al seçeneğinde servis ücreti alınmaz.";
+
+    document.querySelectorAll(".items-list li").forEach(row => {
+        const quantityElement = row.querySelector(".quantity");
+        const id = quantityElement.id;
+        const key = id.replace("qty-", "");
+
+        quantityElement.textContent = cart[key] || 0;
+    });
+
+    const cartItems = document.getElementById("cartItems");
+
+    if (count === 0) {
+        cartItems.innerHTML = `
+            <div class="empty-cart">
+                Sepetiniz şu an boş ☕
+            </div>
+        `;
+    } else {
+        cartItems.innerHTML = Object.entries(cart).map(([key, qty]) => {
+            const [category, index] = key.split("-");
+            const product = products[category][Number(index)];
+
+            return `
+                <div class="cart-item">
+                    <div>
+                        <div class="cart-item-name">${product.name}</div>
+                        <div class="cart-item-price">
+                            ${formatPrice(product.price)} x ${qty}
+                        </div>
+                    </div>
+
+                    <div class="cart-item-right">
+                        <button onclick="changeQuantity('${category}', ${index}, -1)">−</button>
+                        <span>${qty}</span>
+                        <button onclick="changeQuantity('${category}', ${index}, 1)">+</button>
+                        <span>${formatPrice(product.price * qty)}</span>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    // Ödeme ekranı açıksa tutarları da anında güncelle.
+    if (document.getElementById("checkoutOverlay").classList.contains("show")) {
+        renderCheckoutSummary();
+    }
+}
+
+/* SEPETİ AÇ / KAPAT */
+
+function openCart() {
+    document.getElementById("cartOverlay").classList.add("show");
+    document.body.style.overflow = "hidden";
+}
+
+function closeCart() {
+    document.getElementById("cartOverlay").classList.remove("show");
+    document.body.style.overflow = "";
+}
+
+function closeCartOutside(event) {
+    if (event.target.id === "cartOverlay") {
+        closeCart();
+    }
+}
+
+function clearCart() {
+    cart = {};
+    updateCart();
+}
+
+/* ÖDEME ÖZETİ */
+
+function renderCheckoutSummary() {
+    const summary = document.getElementById("checkoutSummary");
+
+    summary.innerHTML = Object.entries(cart).map(([key, qty]) => {
+        const [category, index] = key.split("-");
+        const product = products[category][Number(index)];
+
+        return `
+            <div class="summary-row">
+                <span>${product.name} x ${qty}</span>
+                <strong>${formatPrice(product.price * qty)}</strong>
+            </div>
+        `;
+    }).join("");
+
+    const subtotal = getSubtotal();
+    const fee = getServiceFee();
+    const total = getGrandTotal();
+
+    document.getElementById("checkoutSubtotal").textContent =
+        formatPrice(subtotal);
+
+    document.getElementById("checkoutServiceFee").textContent =
+        formatPrice(fee);
+
+    document.getElementById("checkoutTotal").textContent =
+        formatPrice(total);
+
+    document.getElementById("checkoutDeliveryNotice").textContent =
+        getOrderType() === "Masada"
+        ? "Masaya servis seçildi. Siparişinize 40 TL servis ücreti eklenmiştir."
+        : "Gel-Al seçildi. Ek servis ücreti alınmamaktadır.";
+}
+
+/* ÖDEME EKRANINI AÇ */
+
+function openCheckout() {
+    if (getCartCount() === 0) {
+        alert("Sepetiniz boş!");
+        return;
+    }
+
+    renderCheckoutSummary();
+
+    document.getElementById("cartOverlay").classList.remove("show");
+    document.getElementById("checkoutOverlay").classList.add("show");
+
+    document.body.style.overflow = "hidden";
+}
+
+function closeCheckout() {
+    document.getElementById("checkoutOverlay").classList.remove("show");
+    openCart();
+}
+
+/* SİPARİŞ ONAYI */
+
+function confirmOrder() {
+    const name = document.getElementById("customerName").value.trim();
+    const phone = document.getElementById("customerPhone").value.trim();
+
+    if (!name || !phone) {
+        alert("Lütfen adınızı ve telefon numaranızı girin.");
+        return;
+    }
+
+    if (!/^[0-9+\s()-]{10,20}$/.test(phone)) {
+        alert("Lütfen geçerli bir telefon numarası girin.");
+        return;
+    }
+
+    if (getCartCount() === 0) {
+        alert("Sepetiniz boş!");
+        return;
+    }
+
+    const orderId = "ZULU-" + Date.now().toString().slice(-6);
+    const orderType = getOrderType();
+    const payment = document.querySelector(
+        'input[name="payment"]:checked'
+    ).value;
+
+    const subtotal = getSubtotal();
+    const serviceFee = getServiceFee();
+    const total = getGrandTotal();
+
+    // Sipariş bilgileri
+    const order = {
+        id: orderId,
+        customer: name,
+        phone: phone,
+        type: orderType,
+        payment: payment,
+        note: document.getElementById("orderNote").value.trim(),
+        items: Object.entries(cart).map(([key, qty]) => {
+            const [category, index] = key.split("-");
+            const product = products[category][Number(index)];
+
+            return {
+                name: product.name,
+                price: product.price,
+                quantity: qty
+            };
+        }),
+        subtotal: subtotal,
+        serviceFee: serviceFee,
+        total: total,
+        date: new Date().toISOString()
+    };
+
+    console.log("ZULU Sipariş Bilgisi:", order);
+
+    // Onay ekranını doldur
+    document.getElementById("orderNumber").textContent =
+        "Sipariş No: " + orderId;
+
+    document.getElementById("successCustomer").textContent = name;
+
+    document.getElementById("successType").textContent =
+        orderType === "Masada" ? "Masaya Servis" : "Gel-Al";
+
+    document.getElementById("successPayment").textContent =
+        payment === "Kart" ? "Kart (Kasada)" : "Nakit";
+
+    document.getElementById("successSubtotal").textContent =
+        formatPrice(subtotal);
+
+    document.getElementById("successFee").textContent =
+        formatPrice(serviceFee);
+
+    document.getElementById("successTotal").textContent =
+        formatPrice(total);
+
+    // Onay ekranında sipariş edilen ürünleri de göster.
+    const successItemsList = document.getElementById("successItemsList");
+    successItemsList.replaceChildren();
+
+    order.items.forEach(item => {
+        const row = document.createElement("div");
+        row.className = "success-item-row";
+
+        const name = document.createElement("span");
+        name.textContent = item.name + " × " + item.quantity;
+
+        const price = document.createElement("span");
+        price.textContent = formatPrice(item.price * item.quantity);
+
+        row.append(name, price);
+        successItemsList.appendChild(row);
+    });
+
+    // Ekran geçişi
+    document.getElementById("checkoutOverlay").classList.remove("show");
+    document.getElementById("successOverlay").classList.add("show");
+
+    document.body.style.overflow = "hidden";
+}
+
+/* SİPARİŞİ TAMAMLA */
+
+function finishOrder() {
+    cart = {};
+
+    updateCart();
+
+    document.getElementById("customerName").value = "";
+    document.getElementById("customerPhone").value = "";
+    document.getElementById("orderNote").value = "";
+    document.getElementById("successItemsList").replaceChildren();
+
+    document.getElementById("orderType").value = "Masada";
+
+    document.querySelector('input[name="payment"][value="Nakit"]').checked = true;
+
+    document.getElementById("successOverlay").classList.remove("show");
+
+    document.body.style.overflow = "";
+
+    document.querySelectorAll(".category-wrapper").forEach(wrapper => {
+        wrapper.classList.remove("active");
+    });
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+/* BAŞLAT */
+
+renderProducts();
+updateCart();
+
+</script>
+
+</body>
+</html>
